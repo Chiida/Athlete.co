@@ -25,7 +25,7 @@ import 'package:url_launcher/url_launcher.dart';
 final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
 class SignInViewModel implements SignInInterface {
-  FirebaseUser currentUser;
+  User currentUser;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   List<DocumentSnapshot> currentUserDocuments = [];
@@ -70,19 +70,19 @@ class SignInViewModel implements SignInInterface {
         } else {
           currentUserDocuments = await getCurrentUserDocument(userUIDApple);
           currentUserDocument = currentUserDocuments[0];
-          if (currentUserDocument.data['trainer'] != null &&
-              currentUserDocument.data['trainer'] != '') {
+          if (currentUserDocument.data()['trainer'] != null &&
+              currentUserDocument.data()['trainer'] != '') {
             currentUserTrainerDocuments = await getCurrentUserTrainer(
-                currentUserDocument.data['trainer']);
+                currentUserDocument.data()['trainer']);
             currentUserTrainerDocument = currentUserTrainerDocuments[0];
             totalWeeks = await getCurrentUserTrainerWeeks(
-                currentUserTrainerDocument.data['trainerID']);
+                currentUserTrainerDocument.data()['trainerID']);
             currentUserTrainerName =
-                currentUserTrainerDocument.data['trainer_name'];
+                currentUserTrainerDocument.data()['trainer_name'];
             currentUserTrainingPlanDuration =
-                currentUserTrainerDocument.data['training_plan_duration'];
+                currentUserTrainerDocument.data()['training_plan_duration'];
             currentUserTrainingPlan =
-                currentUserTrainerDocument.data['training_plan_name'];
+                currentUserTrainerDocument.data()['training_plan_name'];
           }
         }
 
@@ -217,19 +217,19 @@ class SignInViewModel implements SignInInterface {
   //   } else {
   //     currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
   //     currentUserDocument = currentUserDocuments[0];
-  //     if (currentUserDocument.data['trainer'] != null &&
-  //         currentUserDocument.data['trainer'] != '') {
+  //     if (currentUserDocument.data()['trainer'] != null &&
+  //         currentUserDocument.data()['trainer'] != '') {
   //       currentUserTrainerDocuments =
-  //           await getCurrentUserTrainer(currentUserDocument.data['trainer']);
+  //           await getCurrentUserTrainer(currentUserDocument.data()['trainer']);
   //       currentUserTrainerDocument = currentUserTrainerDocuments[0];
   //       totalWeeks = await getCurrentUserTrainerWeeks(
-  //           currentUserTrainerDocument.data['trainerID']);
+  //           currentUserTrainerDocument.data()['trainerID']);
   //       currentUserTrainerName =
-  //           currentUserTrainerDocument.data['trainer_name'];
+  //           currentUserTrainerDocument.data()['trainer_name'];
   //       currentUserTrainingPlanDuration =
-  //           currentUserTrainerDocument.data['training_plan_duration'];
+  //           currentUserTrainerDocument.data()['training_plan_duration'];
   //       currentUserTrainingPlan =
-  //           currentUserTrainerDocument.data['training_plan_name'];
+  //           currentUserTrainerDocument.data()['training_plan_name'];
   //     }
   //   }
 
@@ -281,30 +281,30 @@ class SignInViewModel implements SignInInterface {
         await googleSignInAccount.authentication;
 
     /// we get credentials over [GoogleAuthProvider] and get [accessToken & idToken]
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
 
     /// we collect that result and we collect activeUsers info
-    final AuthResult authResult =
+    final UserCredential authResult =
         await _firebaseAuth.signInWithCredential(credential);
 
     /// close dialog
 //    Timer(Duration(seconds: 2), () {
 //      Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
 //    });
-    final FirebaseUser user = authResult.user;
+    final User user = authResult.user;
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final FirebaseUser currentUser = await _firebaseAuth.currentUser();
+    final User currentUser = _firebaseAuth.currentUser;
     assert(user.uid == currentUser.uid);
 
     userEmail = currentUser.email;
     userName = currentUser.displayName;
-    userPhoto = currentUser.photoUrl;
+    userPhoto = currentUser.photoURL;
     String userUIDGoogle = currentUser.uid;
     userUIDPref = userUIDGoogle;
 
@@ -322,19 +322,19 @@ class SignInViewModel implements SignInInterface {
     } else {
       currentUserDocuments = await getCurrentUserDocument(userUIDGoogle);
       currentUserDocument = currentUserDocuments[0];
-      if (currentUserDocument.data['trainer'] != null &&
-          currentUserDocument.data['trainer'] != '') {
+      if (currentUserDocument.data()['trainer'] != null &&
+          currentUserDocument.data()['trainer'] != '') {
         currentUserTrainerDocuments =
-            await getCurrentUserTrainer(currentUserDocument.data['trainer']);
+            await getCurrentUserTrainer(currentUserDocument.data()['trainer']);
         currentUserTrainerDocument = currentUserTrainerDocuments[0];
         totalWeeks = await getCurrentUserTrainerWeeks(
-            currentUserTrainerDocument.data['trainerID']);
+            currentUserTrainerDocument.data()['trainerID']);
         currentUserTrainerName =
-            currentUserTrainerDocument.data['trainer_name'];
+            currentUserTrainerDocument.data()['trainer_name'];
         currentUserTrainingPlanDuration =
-            currentUserTrainerDocument.data['training_plan_duration'];
+            currentUserTrainerDocument.data()['training_plan_duration'];
         currentUserTrainingPlan =
-            currentUserTrainerDocument.data['training_plan_name'];
+            currentUserTrainerDocument.data()['training_plan_name'];
       }
     }
 
@@ -354,8 +354,8 @@ class SignInViewModel implements SignInInterface {
       /// go in app
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => userExist
-              ? currentUserDocument.data['trainer'] != null &&
-                      currentUserDocument.data['trainer'] != ''
+              ? currentUserDocument.data()['trainer'] != null &&
+                      currentUserDocument.data()['trainer'] != ''
                   ? TrainingPlan(
                       userTrainerDocument: currentUserTrainerDocument,
                       userDocument: currentUserDocument,
@@ -436,18 +436,19 @@ class SignInViewModel implements SignInInterface {
     currentUserDocuments = await getCurrentUserDocument(userUIDP);
     currentUserDocument = currentUserDocuments[0];
 
-    if (currentUserDocument.data['trainer'] != null &&
-        currentUserDocument.data['trainer'] != '') {
+    if (currentUserDocument.data()['trainer'] != null &&
+        currentUserDocument.data()['trainer'] != '') {
       currentUserTrainerDocuments =
-          await getCurrentUserTrainer(currentUserDocument.data['trainer']);
+          await getCurrentUserTrainer(currentUserDocument.data()['trainer']);
       currentUserTrainerDocument = currentUserTrainerDocuments[0];
       totalWeeks = await getCurrentUserTrainerWeeks(
-          currentUserTrainerDocument.data['trainerID']);
-      currentUserTrainerName = currentUserTrainerDocument.data['trainer_name'];
+          currentUserTrainerDocument.data()['trainerID']);
+      currentUserTrainerName =
+          currentUserTrainerDocument.data()['trainer_name'];
       currentUserTrainingPlanDuration =
-          currentUserTrainerDocument.data['training_plan_duration'];
+          currentUserTrainerDocument.data()['training_plan_duration'];
       currentUserTrainingPlan =
-          currentUserTrainerDocument.data['training_plan_name'];
+          currentUserTrainerDocument.data()['training_plan_name'];
     }
 
     /// checking subscription status
@@ -471,8 +472,8 @@ class SignInViewModel implements SignInInterface {
       if (equalityResult == 1) {
         /// go in app
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (_) => currentUserDocument.data['trainer'] != null &&
-                    currentUserDocument.data['trainer'] != ''
+            builder: (_) => currentUserDocument.data()['trainer'] != null &&
+                    currentUserDocument.data()['trainer'] != ''
                 ? TrainingPlan(
                     userTrainerDocument: currentUserTrainerDocument,
                     userDocument: currentUserDocument,
@@ -576,8 +577,8 @@ class SignInViewModel implements SignInInterface {
   @override
   createUser(String name, String email, String image, String userUID,
       String platform) async {
-    final databaseReference = Firestore.instance;
-    await databaseReference.collection("Users").document(userUID).setData({
+    final databaseReference = FirebaseFirestore.instance;
+    await databaseReference.collection("Users").doc(userUID).set({
       'display_name': name,
       'image': image,
       'email': email,
@@ -594,24 +595,24 @@ class SignInViewModel implements SignInInterface {
   ///and it is called on every sign in actions
   @override
   Future<bool> doesUserAlreadyExist(String userUID) async {
-    final QuerySnapshot result = await Firestore.instance
+    final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('Users')
         .where('userUID', isEqualTo: userUID)
         .limit(1)
-        .getDocuments();
-    final List<DocumentSnapshot> documents = result.documents;
+        .get();
+    final List<DocumentSnapshot> documents = result.docs;
     return documents.length == 1;
   }
 
   ///Method for getting from database document of current user
   @override
   Future<List<DocumentSnapshot>> getCurrentUserDocument(String userUID) async {
-    var firestore = Firestore.instance;
+    var firestore = FirebaseFirestore.instance;
     QuerySnapshot qn = await firestore
         .collection('Users')
         .where('userUID', isEqualTo: userUID)
-        .getDocuments();
-    return qn.documents;
+        .get();
+    return qn.docs;
   }
 
   ///Method for getting from database document of trainer
@@ -619,22 +620,22 @@ class SignInViewModel implements SignInInterface {
   ///of current user
   @override
   Future<List<DocumentSnapshot>> getCurrentUserTrainer(String trainer) async {
-    final QuerySnapshot result = await Firestore.instance
+    final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('Trainers')
         .where('trainer_name', isEqualTo: trainer)
         .limit(1)
-        .getDocuments();
-    return result.documents;
+        .get();
+    return result.docs;
   }
 
   @override
   Future<int> getCurrentUserTrainerWeeks(String trainerID) async {
-    final QuerySnapshot result = await Firestore.instance
+    final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('Trainers')
-        .document(trainerID)
+        .doc(trainerID)
         .collection('weeks')
-        .getDocuments();
-    return result.documents.length;
+        .get();
+    return result.docs.length;
   }
 
   ///Method for updating and writing the trainer that user chooses from
@@ -643,23 +644,23 @@ class SignInViewModel implements SignInInterface {
   @override
   updateUserWithTrainer(
       DocumentSnapshot userDocument, String userUID, String trainer) async {
-    final db = Firestore.instance;
-    await db.collection('Users').document(userDocument.documentID).updateData({
+    final db = FirebaseFirestore.instance;
+    await db.collection('Users').doc(userDocument.id).update({
       'trainer': trainer,
     });
   }
 
   @override
   updateUserProgress(DocumentSnapshot userDocument, List<dynamic> listToKeep) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('Users')
-        .document(userDocument.documentID)
-        .updateData({'workouts_finished': FieldValue.delete()});
+        .doc(userDocument.id)
+        .update({'workouts_finished': FieldValue.delete()});
 
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('Users')
-        .document(userDocument.documentID)
-        .updateData({'workouts_finished': FieldValue.arrayUnion(listToKeep)});
+        .doc(userDocument.id)
+        .update({'workouts_finished': FieldValue.arrayUnion(listToKeep)});
   }
 
   // @override
@@ -707,19 +708,19 @@ class SignInViewModel implements SignInInterface {
   //       } else {
   //         currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
   //         currentUserDocument = currentUserDocuments[0];
-  //         if (currentUserDocument.data['trainer'] != null &&
-  //             currentUserDocument.data['trainer'] != '') {
+  //         if (currentUserDocument.data()['trainer'] != null &&
+  //             currentUserDocument.data()['trainer'] != '') {
   //           currentUserTrainerDocuments = await getCurrentUserTrainer(
-  //               currentUserDocument.data['trainer']);
+  //               currentUserDocument.data()['trainer']);
   //           currentUserTrainerDocument = currentUserTrainerDocuments[0];
   //           totalWeeks = await getCurrentUserTrainerWeeks(
-  //               currentUserTrainerDocument.data['trainerID']);
+  //               currentUserTrainerDocument.data()['trainerID']);
   //           currentUserTrainerName =
-  //               currentUserTrainerDocument.data['trainer_name'];
+  //               currentUserTrainerDocument.data()['trainer_name'];
   //           currentUserTrainingPlanDuration =
-  //               currentUserTrainerDocument.data['training_plan_duration'];
+  //               currentUserTrainerDocument.data()['training_plan_duration'];
   //           currentUserTrainingPlan =
-  //               currentUserTrainerDocument.data['training_plan_name'];
+  //               currentUserTrainerDocument.data()['training_plan_name'];
   //         }
   //       }
 

@@ -13,9 +13,9 @@ Widget listOfWorkouts(
   String weekName,
 ) {
   List<dynamic> workoutsFinished = [];
-  workoutsFinished = userDocument.data['workouts_finished'];
-  String trainerID = userTrainerDocument.data['trainerID'];
-  String weekID = snapshot.data[index].data['weekID'];
+  workoutsFinished = userDocument.data()['workouts_finished'];
+  String trainerID = userTrainerDocument.data()['trainerID'];
+  String weekID = snapshot.data[index].data()['weekID'];
   List<dynamic> workoutIDs = [];
   workoutIDs =
       TrainingPlanViewModel().getWorkoutIDs(workoutsFinished, trainerID);
@@ -31,9 +31,9 @@ Widget listOfWorkouts(
               shrinkWrap: true,
               itemCount: snapshot2.data.length,
               itemBuilder: (BuildContext context, int index2) {
-                String workoutID = snapshot2.data[index2].data['workoutID'];
-                numOfSeries = snapshot2.data[index2].data['num_of_series'];
-                print(numOfSeries.toString()  + 'NUM OF SERIES');
+                String workoutID = snapshot2.data()[index2].data()['workoutID'];
+                numOfSeries = snapshot2.data()[index2].data()['num_of_series'];
+                print(numOfSeries.toString() + 'NUM OF SERIES');
                 return workoutContainer(
                     userDocument,
                     snapshot2,

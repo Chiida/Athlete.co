@@ -8,17 +8,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 Widget pageOne(
-    PageController pageController,
-    BuildContext context,
-    DocumentSnapshot currentUserDocument,
-    currentUserTrainerDocument,
-    String userName,
-    userPhoto,
-    userUID,
-    userEmail,
-    bool userExist,
-    Function checkIsIosTablet,
-    ) {
+  PageController pageController,
+  BuildContext context,
+  DocumentSnapshot currentUserDocument,
+  currentUserTrainerDocument,
+  String userName,
+  userPhoto,
+  userUID,
+  userEmail,
+  bool userExist,
+  Function checkIsIosTablet,
+) {
   return Stack(
     children: <Widget>[
       Container(
@@ -44,26 +44,26 @@ Widget pageOne(
             child: Text('GO IN'),
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => userExist
-                    ? currentUserDocument.data['trainer'] != null &&
-                    currentUserDocument.data['trainer'] != ''
-                    ? TrainingPlan(
-                  userTrainerDocument: currentUserTrainerDocument,
-                  userDocument: currentUserDocument,
-                )
+                    ? currentUserDocument.data()['trainer'] != null &&
+                            currentUserDocument.data()['trainer'] != ''
+                        ? TrainingPlan(
+                            userTrainerDocument: currentUserTrainerDocument,
+                            userDocument: currentUserDocument,
+                          )
+                        : ChooseAthlete(
+                            userDocument: currentUserDocument,
+                            name: userName,
+                            email: userEmail,
+                            photo: userPhoto,
+                            userUID: userUID,
+                          )
                     : ChooseAthlete(
-                  userDocument: currentUserDocument,
-                  name: userName,
-                  email: userEmail,
-                  photo: userPhoto,
-                  userUID: userUID,
-                )
-                    : ChooseAthlete(
-                  userDocument: currentUserDocument,
-                  name: userName,
-                  email: userEmail,
-                  photo: userPhoto,
-                  userUID: userUID,
-                )))),
+                        userDocument: currentUserDocument,
+                        name: userName,
+                        email: userEmail,
+                        photo: userPhoto,
+                        userUID: userUID,
+                      )))),
       ),
       Container(
         width: SizeConfig.blockSizeHorizontal * 100,
@@ -86,15 +86,23 @@ Widget pageOne(
       ),
       Container(
           margin: EdgeInsets.only(
-              top: checkIsIosTablet(context) ? SizeConfig.blockSizeVertical * 50  : SizeConfig.blockSizeVertical * 60,
+              top: checkIsIosTablet(context)
+                  ? SizeConfig.blockSizeVertical * 50
+                  : SizeConfig.blockSizeVertical * 60,
               left: SizeConfig.blockSizeHorizontal * 2),
           child: headlineStart()),
       Container(
-          margin: EdgeInsets.only(top: checkIsIosTablet(context) ? SizeConfig.blockSizeVertical * 68 : SizeConfig.blockSizeVertical * 74),
+          margin: EdgeInsets.only(
+              top: checkIsIosTablet(context)
+                  ? SizeConfig.blockSizeVertical * 68
+                  : SizeConfig.blockSizeVertical * 74),
           child: subText('Train with UFC athlete and future champion\n',
               'Aleksandar Rakic')),
       Container(
-        margin: EdgeInsets.only(top: checkIsIosTablet(context) ? SizeConfig.blockSizeVertical * 68  : SizeConfig.blockSizeVertical * 71),
+        margin: EdgeInsets.only(
+            top: checkIsIosTablet(context)
+                ? SizeConfig.blockSizeVertical * 68
+                : SizeConfig.blockSizeVertical * 71),
         alignment: Alignment.center,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -122,5 +130,3 @@ Widget pageOne(
     ],
   );
 }
-
-

@@ -13,15 +13,18 @@ Widget weekContainer(
     DocumentSnapshot userDocument) {
   SizeConfig().init(context);
 
-  String trainerName = userTrainerDocument.data['trainer_name'];
-  String phase = snapshot.data[index]['phase'].toString();
-  String name1 =
-      snapshot.data[index]['name'].toString().substring(0, 1).toUpperCase();
-  String name2 = snapshot.data[index]['name'].toString().substring(1);
+  String trainerName = userTrainerDocument.data()['trainer_name'];
+  String phase = snapshot.data[index].data()['phase'].toString();
+  String name1 = snapshot.data[index]
+      .data()['name']
+      .toString()
+      .substring(0, 1)
+      .toUpperCase();
+  String name2 = snapshot.data[index].data()['name'].toString().substring(1);
 
   return GestureDetector(
     onTap: () {
-      String weekName = snapshot.data[index]['name'];
+      String weekName = snapshot.data[index].data()['name'];
       Navigator.push(
         context,
         CardAnimationTween(
@@ -86,7 +89,7 @@ Widget weekContainer(
               )
             ])),
         subtitle: Text(
-          snapshot.data[index].data['numberOfWorkouts'].toString() +
+          snapshot.data[index].data()['numberOfWorkouts'].toString() +
               ' Workouts',
           style: TextStyle(
               color: Colors.white60,

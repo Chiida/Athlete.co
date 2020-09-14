@@ -8,15 +8,14 @@ import 'package:attt/utils/size_config.dart';
 
 Widget listOfWeeks(DocumentSnapshot userDocument,
     DocumentSnapshot userTrainerDocument, BuildContext context) {
-
   SizeConfig().init(context);
-  String trainerID = userTrainerDocument.data['trainerID'];
-  String emailOfUser = userDocument.data['email'];
-  String nameOfUser = userDocument.data['display_name'];
-  String photoOfUser = userDocument.data['image'];
-  String userUID = userDocument.data['userUID'];
+  String trainerID = userTrainerDocument.data()['trainerID'];
+  String emailOfUser = userDocument.data()['email'];
+  String nameOfUser = userDocument.data()['display_name'];
+  String photoOfUser = userDocument.data()['image'];
+  String userUID = userDocument.data()['userUID'];
   List<dynamic> weeksFinished = [];
-  weeksFinished = userDocument.data['workouts_finished'];
+  weeksFinished = userDocument.data()['workouts_finished'];
   List<dynamic> weekIDs = [];
   weekIDs = TrainingPlanViewModel().getWeekIDs(weeksFinished, trainerID);
   List<dynamic> weeksToKeep = [];
@@ -28,9 +27,8 @@ Widget listOfWeeks(DocumentSnapshot userDocument,
       hasActiveConnection ? Source.serverAndCache : Source.cache;
 
   return FutureBuilder(
-
     future: TrainingPlanViewModel()
-        .getWeeks(userTrainerDocument.data['trainerID'], source),
+        .getWeeks(userTrainerDocument.data()['trainerID'], source),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
       if (snapshot.hasData) {
         for (int i = 0; i < snapshot.data.length; i++) {

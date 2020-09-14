@@ -14,12 +14,14 @@ Widget futureWeekContainer(List<dynamic> finishedWeeksWithAthlete, int index,
     builder: (BuildContext context, AsyncSnapshot snapshot2) {
       if (snapshot2.hasData) {
         if (snapshot2 != null && snapshot2.data.length != 0) {
-          weekName = snapshot2.data[0].data['name'];
+          weekName = snapshot2.data()[0].data()['name'];
         }
         return finishedWeekContainer(weekName, trainerName, workoutsList,
             finishedWeeksWithAthlete, index);
       } else {
-        return SpinKitFadingCircle(color: MyColors().lightWhite,);
+        return SpinKitFadingCircle(
+          color: MyColors().lightWhite,
+        );
       }
     },
   );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:attt/view/trainingPlan/widgets/descriptionText.dart';
 
 Widget weekDescription(String weekName, AsyncSnapshot snapshot, int index) {
-  String description = snapshot.data[index]['weekDescription'];
+  String description = snapshot.data[index].data()['weekDescription'];
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,

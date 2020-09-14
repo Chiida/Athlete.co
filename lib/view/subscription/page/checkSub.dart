@@ -143,69 +143,69 @@ class _CheckSubscriptionState extends State<CheckSubscription> {
       //     productItem.originalTransactionIdentifierIOS.toString());
       // print('Transaction state: ' + productItem.transactionStateIOS.toString());
 
-       var dateUtility = DateUtil();
-    var now = DateTime.now().toString();
-    var nowSplitted = now.split('-');
-    var month = nowSplitted[1];
+      var dateUtility = DateUtil();
+      var now = DateTime.now().toString();
+      var nowSplitted = now.split('-');
+      var month = nowSplitted[1];
 
-    var date = new DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      var date = new DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-    String day;
-    int dayInt;
+      String day;
+      int dayInt;
 
-    if (month == '01') {
-      dayInt = int.parse('31');
-      print('January ' + dayInt.toString());
-    } else if (month == '02') {
-      dayInt = int.parse('28');
-      print('Feb ' + dayInt.toString());
-    } else if (month == '03') {
-      dayInt = int.parse('31');
-      print('March ' + dayInt.toString());
-    } else if (month == '04') {
-      dayInt = int.parse('30');
-      print('April ' + dayInt.toString());
-    } else if (month == '05') {
-      dayInt = int.parse('31');
-      print('May ' + dayInt.toString());
-    } else if (month == '06') {
-      dayInt = int.parse('30');
-      print('June ' + dayInt.toString());
-    } else if (month == '07') {
-      dayInt = int.parse('31');
-      print('July ' + dayInt.toString());
-    } else if (month == '08') {
-      dayInt = int.parse('31');
-      print('August ' + dayInt.toString());
-    } else if (month == '09') {
-      dayInt = int.parse('30');
-      print('September ' + dayInt.toString());
-    } else if (month == '10') {
-      dayInt = int.parse('31');
-      print('October ' + dayInt.toString());
-    } else if (month == '11') {
-      dayInt = int.parse('30');
-      print('November ' + dayInt.toString());
-    } else if (month == '12') {
-      dayInt = int.parse('31');
-      print('December ' + dayInt.toString());
-    }
+      if (month == '01') {
+        dayInt = int.parse('31');
+        print('January ' + dayInt.toString());
+      } else if (month == '02') {
+        dayInt = int.parse('28');
+        print('Feb ' + dayInt.toString());
+      } else if (month == '03') {
+        dayInt = int.parse('31');
+        print('March ' + dayInt.toString());
+      } else if (month == '04') {
+        dayInt = int.parse('30');
+        print('April ' + dayInt.toString());
+      } else if (month == '05') {
+        dayInt = int.parse('31');
+        print('May ' + dayInt.toString());
+      } else if (month == '06') {
+        dayInt = int.parse('30');
+        print('June ' + dayInt.toString());
+      } else if (month == '07') {
+        dayInt = int.parse('31');
+        print('July ' + dayInt.toString());
+      } else if (month == '08') {
+        dayInt = int.parse('31');
+        print('August ' + dayInt.toString());
+      } else if (month == '09') {
+        dayInt = int.parse('30');
+        print('September ' + dayInt.toString());
+      } else if (month == '10') {
+        dayInt = int.parse('31');
+        print('October ' + dayInt.toString());
+      } else if (month == '11') {
+        dayInt = int.parse('30');
+        print('November ' + dayInt.toString());
+      } else if (month == '12') {
+        dayInt = int.parse('31');
+        print('December ' + dayInt.toString());
+      }
 
-    var newDate = new DateTime(date.year, date.month, date.day + dayInt);
-    print(newDate.millisecondsSinceEpoch.toString() + ' Date with subcription');
-    var localExpireDate = newDate.millisecondsSinceEpoch.toString();
+      var newDate = new DateTime(date.year, date.month, date.day + dayInt);
+      print(
+          newDate.millisecondsSinceEpoch.toString() + ' Date with subcription');
+      var localExpireDate = newDate.millisecondsSinceEpoch.toString();
 
       final prefs = await SharedPreferences.getInstance();
       print('Date checked1');
       prefs.setString('expirationDate', localExpireDate);
       print('Expiration Date is written into shared preffs');
 
-
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => widget.userExist
-              ? widget.currentUserDocument.data['trainer'] != null &&
-                      widget.currentUserDocument.data['trainer'] != ''
+              ? widget.currentUserDocument.data()['trainer'] != null &&
+                      widget.currentUserDocument.data()['trainer'] != ''
                   ? TrainingPlan(
                       userTrainerDocument: widget.currentUserTrainerDocument,
                       userDocument: widget.currentUserDocument,
@@ -315,8 +315,8 @@ class _CheckSubscriptionState extends State<CheckSubscription> {
       if (equalityResult == 1) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (_) => widget.userExist
-                ? widget.currentUserDocument.data['trainer'] != null &&
-                        widget.currentUserDocument.data['trainer'] != ''
+                ? widget.currentUserDocument.data()['trainer'] != null &&
+                        widget.currentUserDocument.data()['trainer'] != ''
                     ? TrainingPlan(
                         userTrainerDocument: widget.currentUserTrainerDocument,
                         userDocument: widget.currentUserDocument,
@@ -348,8 +348,8 @@ class _CheckSubscriptionState extends State<CheckSubscription> {
     // if (comparedResult == 1) {
     //   Navigator.of(context).pushReplacement(MaterialPageRoute(
     //       builder: (_) => widget.userExist
-    //           ? widget.currentUserDocument.data['trainer'] != null &&
-    //                   widget.currentUserDocument.data['trainer'] != ''
+    //           ? widget.currentUserDocument.data()['trainer'] != null &&
+    //                   widget.currentUserDocument.data()['trainer'] != ''
     //               ? TrainingPlan(
     //                   userTrainerDocument: widget.currentUserTrainerDocument,
     //                   userDocument: widget.currentUserDocument,
@@ -670,9 +670,8 @@ class _CheckSubscriptionState extends State<CheckSubscription> {
                     margin: EdgeInsets.only(
                         top: checkIsIosTablet(context)
                             ? SizeConfig.blockSizeVertical * 61.5
-                            : SizeConfig.blockSizeVertical * 54, 
-                            left: SizeConfig.blockSizeHorizontal * 18
-                            ),
+                            : SizeConfig.blockSizeVertical * 54,
+                        left: SizeConfig.blockSizeHorizontal * 18),
                     width: SizeConfig.blockSizeHorizontal * 60,
                     child: RichText(
                       text: TextSpan(

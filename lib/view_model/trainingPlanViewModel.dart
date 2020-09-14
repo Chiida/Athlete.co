@@ -16,7 +16,6 @@ import 'package:flutter_appavailability/flutter_appavailability.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TrainingPlanViewModel implements TrainingPlanInterface {
-
   @override
   Future getWeeks(String trainerID, Source source) async {
     var firestore = Firestore.instance;
@@ -25,8 +24,9 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
         .document(trainerID)
         .collection('weeks')
         .orderBy('order')
-        .getDocuments(source: source);
-    return qn.documents;
+        .get();
+    // .getDocuments(source: source);
+    return qn.docs;
   }
 
   @override
@@ -57,34 +57,33 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
     List<dynamic> listOfNotes,
     bool alreadyFinishedWorkout,
     bool finishedWorkout,
-      String tag,
+    String tag,
   ) {
     Navigator.push(
         context,
         CardAnimationTween(
             widget: Workout(
-                userDocument: userDocument,
-                userTrainerDocument: userTrainerDocument,
-                trainerID: trainerID,
-                workoutName: workoutName,
-                weekID: weekID,
-                workoutID: workoutID,
-                warmupDesc: warmupDesc,
-                weekName: weekName,
-                listOfNotes: listOfNotes,
-                alreadyFinishedWorkout: alreadyFinishedWorkout,
-                finishedWorkout: finishedWorkout,
-                tag: tag,
-            )));
+          userDocument: userDocument,
+          userTrainerDocument: userTrainerDocument,
+          trainerID: trainerID,
+          workoutName: workoutName,
+          weekID: weekID,
+          workoutID: workoutID,
+          warmupDesc: warmupDesc,
+          weekName: weekName,
+          listOfNotes: listOfNotes,
+          alreadyFinishedWorkout: alreadyFinishedWorkout,
+          finishedWorkout: finishedWorkout,
+          tag: tag,
+        )));
   }
 
   @override
-  whatsAppOpen(String phoneNumber, String message, String screen, String userName,
-      BuildContext context) async {
-
+  whatsAppOpen(String phoneNumber, String message, String screen,
+      String userName, BuildContext context) async {
     var whatsappUrl;
 
-    if(Platform.isIOS) {
+    if (Platform.isIOS) {
       whatsappUrl = 'whatsapp://wa.me/$phoneNumber/?text=${Uri.parse(message)}';
     } else {
       whatsappUrl = "whatsapp://send?phone=$phoneNumber&text=$message";
@@ -98,7 +97,7 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
         launchEmail(userName);
       }
     }
-  }                                                                                                                                     
+  }
 
   @override
   showAlertDialog(BuildContext context) {
@@ -139,7 +138,8 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
     final Uri params = Uri(
       scheme: 'mailto',
       path: 'hello@athlete.co',
-      query: 'subject=Customer Service Enquiry from ATHLETE.CO App Feedback&body=Hi, my name is $userName.', //add subject and body here
+      query:
+          'subject=Customer Service Enquiry from ATHLETE.CO App Feedback&body=Hi, my name is $userName.', //add subject and body here
     );
     var url = params.toString();
     if (await canLaunch(url)) {
@@ -149,11 +149,10 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
     }
   }
 
-
-
   /// launch messenger
   launchMessenger() async {
-    var messengerUrl = 'https://m.facebook.com/messages/?id=2050729918315322&env=messenger';
+    var messengerUrl =
+        'https://m.facebook.com/messages/?id=2050729918315322&env=messenger';
     if (await canLaunch(messengerUrl)) {
       await launch(messengerUrl);
     } else {
@@ -279,10 +278,10 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
   getFinishedWeeks(List<dynamic> weekIDs, AsyncSnapshot snapshot, int index) {
     int counter = 0;
     for (var i = 0; i < weekIDs.length; i++) {
-      if (weekIDs[i] == snapshot.data[index]['weekID'].toString()) {
+      if (weekIDs[i] == snapshot.data[index].data()['weekID'].toString()) {
         counter++;
-        if (counter == snapshot.data[index]['numberOfWorkouts']) {
-          finishedWeeks.add(snapshot.data[index]['weekID'].toString());
+        if (counter == snapshot.data[index].data()['numberOfWorkouts']) {
+          finishedWeeks.add(snapshot.data[index].data()['weekID'].toString());
         }
       }
     }
@@ -310,5 +309,4 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
       );
     }
   }
-
 }

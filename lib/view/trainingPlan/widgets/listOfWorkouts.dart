@@ -20,10 +20,13 @@ class ListOfWorkouts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String trainerName = userTrainerDocument.data['trainer_name'];
-    String workoutName =
-        snapshot.data[index]['name'].toString().substring(0, 1).toUpperCase() +
-            snapshot.data[index]['name'].toString().substring(1);
+    String trainerName = userTrainerDocument.data()['trainer_name'];
+    String workoutName = snapshot
+            .data()[index]['name']
+            .toString()
+            .substring(0, 1)
+            .toUpperCase() +
+        snapshot.data[index].data()['name'].toString().substring(1);
     return Scaffold(
       appBar: AppBar(
         title: Text(

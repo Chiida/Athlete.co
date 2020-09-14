@@ -11,10 +11,10 @@ Widget trainingPlanHeadline(
   BuildContext context,
   String userUID,
 ) {
-  String name = userDocument.data['display_name'];
+  String name = userDocument.data()['display_name'];
   List<String> nameSurname = name.split(' ');
   String justName = nameSurname[0];
-  String image = userDocument.data['image'];
+  String image = userDocument.data()['image'];
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,

@@ -23,7 +23,8 @@ class SeriesInfoScreen extends StatefulWidget {
   _SeriesInfoScreenState createState() => _SeriesInfoScreenState();
 }
 
-class _SeriesInfoScreenState extends State<SeriesInfoScreen> with TickerProviderStateMixin {
+class _SeriesInfoScreenState extends State<SeriesInfoScreen>
+    with TickerProviderStateMixin {
   List<DocumentSnapshot> seriesDocuments = [];
   DocumentSnapshot seriesDocument;
   String seriesName = '';
@@ -55,7 +56,7 @@ class _SeriesInfoScreenState extends State<SeriesInfoScreen> with TickerProvider
         widget.trainerID, widget.weekID, widget.workoutID, widget.seriesID);
     seriesDocument = seriesDocuments[0];
     setState(() {
-      seriesName = seriesDocument.data['name'];
+      seriesName = seriesDocument.data()['name'];
     });
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       seriesNameWords = seriesName.split(' ');
@@ -83,45 +84,43 @@ class _SeriesInfoScreenState extends State<SeriesInfoScreen> with TickerProvider
     return SlideTransition(
       position: _offsetAnimation,
       child: Scaffold(
-        backgroundColor: MyColors().lightBlack,
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: SizeConfig.blockSizeVertical * 100,
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 0),
-                child: Text(
-                  seriesName,
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).orientation ==
-                        Orientation.landscape
-                        ? SizeConfig.safeBlockHorizontal * 5
-                        : SizeConfig.safeBlockHorizontal * 9.5,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
+          backgroundColor: MyColors().lightBlack,
+          body: Container(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: SizeConfig.blockSizeVertical * 100,
+                    margin:
+                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 0),
+                    child: Text(
+                      seriesName,
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).orientation ==
+                                Orientation.landscape
+                            ? SizeConfig.safeBlockHorizontal * 5
+                            : SizeConfig.safeBlockHorizontal * 9.5,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ]
+                ]),
           ),
-        ),
-        bottomNavigationBar: btnCustom()
-      ),
+          bottomNavigationBar: btnCustom()),
     );
   }
 }
 
 Widget btnCustom() {
   return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(10))
-    ),
+    decoration:
+        BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
     margin: EdgeInsets.only(
-      left: SizeConfig.blockSizeHorizontal * 5,
+        left: SizeConfig.blockSizeHorizontal * 5,
         right: SizeConfig.blockSizeHorizontal * 5,
         bottom: SizeConfig.blockSizeVertical * 3,
         top: SizeConfig.blockSizeVertical * 0),
@@ -132,7 +131,7 @@ Widget btnCustom() {
       onPressed: () => overlayEntry.remove(),
       child: Center(
         child: Text(
-          'BEGIN' ,
+          'BEGIN',
           style: TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: SizeConfig.blockSizeHorizontal * 4,

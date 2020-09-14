@@ -7,6 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class ChewieVideoViewModel {
   playVideo(
@@ -28,7 +31,7 @@ class ChewieVideoViewModel {
 
   updateWorkoutWithNote(String trainerID, String weekID, String workoutID,
       List<String> note) async {
-    if(isFromRepsOnly) {
+    if (isFromRepsOnly) {
       isDone = false;
       print('Dolazi sa reps type pa je isDone = $isDone');
     } else {
@@ -126,11 +129,11 @@ class ChewieVideoViewModel {
     String note;
     List<dynamic> historyNotes = [];
     if (newNote != null) {
-      note = userDocument.data['userUID'] + '_!_?_' + newNote;
+      note = userDocument.data()['userUID'] + '_!_?_' + newNote;
       notes.add(note);
       userNotes = note.split('_!_?_')[1];
       ChewieVideoViewModel().updateWorkoutWithNote(
-        userTrainerDocument.data['trainerID'],
+        userTrainerDocument.data()['trainerID'],
         weekID,
         workoutID,
         notes,
@@ -138,21 +141,21 @@ class ChewieVideoViewModel {
     } else {
       newNote = userNotes;
     }
-    note = userDocument.data['userUID'] +
+    note = userDocument.data()['userUID'] +
         '_!_?_' +
         newNote +
         '_!_?_' +
         currentTime;
     historyNotes.add(note);
     ChewieVideoViewModel().updateWorkoutHistoryNote(
-      userTrainerDocument.data['trainerID'],
+      userTrainerDocument.data()['trainerID'],
       weekID,
       workoutID,
       historyNotes,
     );
     ChewieVideoViewModel().updateUserWithFinishedWorkout(
       userDocument,
-      userTrainerDocument.data['trainerID'],
+      userTrainerDocument.data()['trainerID'],
       weekID,
       workoutID,
       currentTime,
@@ -161,12 +164,12 @@ class ChewieVideoViewModel {
     List<dynamic> currentUserDocuments = [];
     DocumentSnapshot currentUserDocument;
     currentUserDocuments = await SignInViewModel()
-        .getCurrentUserDocument(userDocument.data['userUID']);
+        .getCurrentUserDocument(userDocument.data()['userUID']);
     currentUserDocument = currentUserDocuments[0];
     List<dynamic> currentUserTrainerDocuments = [];
     DocumentSnapshot currentUserTrainerDocument;
     currentUserTrainerDocuments = await SignInViewModel()
-        .getCurrentUserTrainer(currentUserDocument.data['trainer']);
+        .getCurrentUserTrainer(currentUserDocument.data()['trainer']);
     currentUserTrainerDocument = currentUserTrainerDocuments[0];
     FocusScope.of(context).requestFocus(new FocusNode());
     Navigator.of(context).pushAndRemoveUntil(
@@ -174,7 +177,7 @@ class ChewieVideoViewModel {
           builder: (_) => TrainingPlan(
             userDocument: currentUserDocument,
             userTrainerDocument: currentUserTrainerDocument,
-            userUID: currentUserDocument.data['userUID'],
+            userUID: currentUserDocument.data()['userUID'],
           ),
         ),
         (Route<dynamic> route) => false);
@@ -189,7 +192,7 @@ class ChewieVideoViewModel {
 
   Future<List<DocumentSnapshot>> getSeriesName(String trainerID, String weekID,
       String workoutID, String seriesID) async {
-    var firestore = Firestore.instance;
+    var firestore = FirebaseFirestore.instance;
     QuerySnapshot qn = await firestore
         .collection('Trainers')
         .document(trainerID)
@@ -199,8 +202,7 @@ class ChewieVideoViewModel {
         .document(workoutID)
         .collection('series')
         .where('seriesID', isEqualTo: seriesID)
-        .getDocuments(
-            source: hasActiveConnection ? Source.serverAndCache : Source.cache);
-    return qn.documents;
+        .get();
+    return qn.docs;
   }
 }

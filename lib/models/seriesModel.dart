@@ -6,10 +6,10 @@ class Series {
   Series({this.name, this.seriesID, this.circuit});
 
   factory Series.fromDocument(DocumentSnapshot doc) {
-     return Series(
-        name: doc['name'],
-        seriesID: doc['seriesID'],
-        circuit: doc['circuit'],
-     );
+    return Series(
+      name: doc.data()['name'],
+      seriesID: doc.data()['seriesID'],
+      circuit: doc.data()['circuit'],
+    );
   }
 }

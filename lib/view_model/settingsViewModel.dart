@@ -14,9 +14,9 @@ class SettingsViewModel implements SettingsInterface {
     Navigator.of(context).push(CardAnimationTween(
       widget: ChooseAthlete(
         userDocument: userDocument,
-        name: userDocument['display_name'],
-        email: userDocument['email'],
-        photo: userDocument['image'],
+        name: userDocument.data()['display_name'],
+        email: userDocument.data()['email'],
+        photo: userDocument.data()['image'],
         userUID: userUID,
       ),
     ));

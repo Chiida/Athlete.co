@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:attt/utils/globals.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class TrainingPlan extends StatefulWidget {
   final DocumentSnapshot userDocument;
   final DocumentSnapshot userTrainerDocument;
@@ -86,7 +85,8 @@ class _TrainingPlanState extends State<TrainingPlan> {
                 ),
                 Container(
                     child: FlatButton.icon(
-                  onPressed: () => showSocialMediaDialog(context, widget.userDocument.data['display_name']),
+                  onPressed: () => showSocialMediaDialog(
+                      context, widget.userDocument.data()['display_name']),
                   label: Text(
                     'Can we help? Contact us.',
                     style: TextStyle(

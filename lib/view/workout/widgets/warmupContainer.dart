@@ -88,7 +88,7 @@ class _WarmupContainerState extends State<WarmupContainer> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      onlineWarmup.add(snapshot.data[index].data['video']);
+                      onlineWarmup.add(snapshot.data[index].data()['video']);
                       exerciseSnapshots.add(snapshot.data[index]);
                       return EmptyContainer();
                     });
@@ -99,7 +99,10 @@ class _WarmupContainerState extends State<WarmupContainer> {
               }
             }),
         Container(
-          margin: EdgeInsets.only(top: checkIsIosTablet(context) ? SizeConfig.blockSizeVertical * 3 : SizeConfig.blockSizeVertical * 0),
+          margin: EdgeInsets.only(
+              top: checkIsIosTablet(context)
+                  ? SizeConfig.blockSizeVertical * 3
+                  : SizeConfig.blockSizeVertical * 0),
           color: MyColors().black,
           child: custom.ExpansionTile(
             title: Text(
@@ -108,7 +111,9 @@ class _WarmupContainerState extends State<WarmupContainer> {
                   color: MyColors().white,
                   fontSize: SizeConfig.blockSizeHorizontal * 5),
             ),
-            subtitle: widget.circuit == null ? warmupDescription : widget.seriesName + ' ' + widget.circuit,
+            subtitle: widget.circuit == null
+                ? warmupDescription
+                : widget.seriesName + ' ' + widget.circuit,
             iconColor: MyColors().white,
             backgroundColor: MyColors().black,
             initiallyExpanded: false,
@@ -170,12 +175,12 @@ class _WarmupContainerState extends State<WarmupContainer> {
     for (var i = 0; i < warmupDoc.length; i++) {
       if (warmupDescription == '') {
         setState(() {
-          warmupDescription = warmupDescription + warmupDoc[i].data['name'];
+          warmupDescription = warmupDescription + warmupDoc[i].data()['name'];
         });
       } else {
         setState(() {
           warmupDescription =
-              warmupDescription + ' - ' + warmupDoc[i].data['name'];
+              warmupDescription + ' - ' + warmupDoc[i].data()['name'];
         });
       }
     }

@@ -7,11 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   final timerService = TimerService();
   InAppPurchaseConnection.enablePendingPurchases();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final appleSignInAvailable = await AppleSignInAvailable.check();
   runApp(Provider<AppleSignInAvailable>.value(

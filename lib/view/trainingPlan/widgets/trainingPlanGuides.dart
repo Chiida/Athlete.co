@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 
 Widget trainingPlanGuides(
     DocumentSnapshot userTrainerDocument, BuildContext context) {
-  String trainingPlan = userTrainerDocument.data['training_plan_name'];
-  String trainingDuration = userTrainerDocument.data['training_plan_duration'];
-  String trainingPhases = userTrainerDocument.data['phases'].toString();
-  String athlete = userTrainerDocument.data['trainer_name'] +
+  String trainingPlan = userTrainerDocument.data()['training_plan_name'];
+  String trainingDuration =
+      userTrainerDocument.data()['training_plan_duration'];
+  String trainingPhases = userTrainerDocument.data()['phases'].toString();
+  String athlete = userTrainerDocument.data()['trainer_name'] +
       ' - ' +
-      userTrainerDocument.data['description'];
-  String performanceCoach = userTrainerDocument.data['performance_coach'];
+      userTrainerDocument.data()['description'];
+  String performanceCoach = userTrainerDocument.data()['performance_coach'];
 
   print('Training phases: ' + trainingPhases);
   return Container(

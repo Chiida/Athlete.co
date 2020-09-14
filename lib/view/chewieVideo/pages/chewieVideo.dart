@@ -86,17 +86,17 @@ class _ChewieVideoState extends State<ChewieVideo>
       exerciseNameAndSetNext = namesWithSet[index + 1];
       seriesID = exerciseNameAndSetNext.split('_')[1];
     }
-    exerciseDuration = workoutExercisesWithSets[index].data['duration'];
-    exerciseIsReps = workoutExercisesWithSets[index].data['isReps'];
-    exerciseReps = workoutExercisesWithSets[index].data['reps'];
-    exerciseSets = workoutExercisesWithSets[index].data['sets'];
-    exerciseRest = workoutExercisesWithSets[index].data['rest'];
-    exerciseTips = workoutExercisesWithSets[index].data['tips'];
+    exerciseDuration = workoutExercisesWithSets[index].data()['duration'];
+    exerciseIsReps = workoutExercisesWithSets[index].data()['isReps'];
+    exerciseReps = workoutExercisesWithSets[index].data()['reps'];
+    exerciseSets = workoutExercisesWithSets[index].data()['sets'];
+    exerciseRest = workoutExercisesWithSets[index].data()['rest'];
+    exerciseTips = workoutExercisesWithSets[index].data()['tips'];
     exerciseName = exerciseNameAndSet.split('_')[2];
     exerciseSet = exerciseNameAndSet.split('_')[0];
     exerciseRepsDescription =
-        workoutExercisesWithSets[index].data['repsDescription'];
-    exerciseTime = workoutExercisesWithSets[index].data['time'];
+        workoutExercisesWithSets[index].data()['repsDescription'];
+    exerciseTime = workoutExercisesWithSets[index].data()['time'];
   }
 
   /// when we want to play next video, we simply set index to increment
@@ -115,15 +115,13 @@ class _ChewieVideoState extends State<ChewieVideo>
             builder: (BuildContext context) => Visibility(
                 visible: true,
                 child: SeriesInfoScreen(
-                    trainerID: widget.userTrainerDocument.data['trainerID'],
+                    trainerID: widget.userTrainerDocument.data()['trainerID'],
                     weekID: widget.weekID,
-                    sets: workoutExercisesWithSets[
-                            index + 1]
-                        .data['sets'],
+                    sets: workoutExercisesWithSets[index + 1].data()['sets'],
                     workoutID: widget.workoutID,
                     seriesID: seriesID)));
         overlayState.insert(overlayEntry);
-      } else if ( index == source.length - 1) {
+      } else if (index == source.length - 1) {
         print('U DRUGOM IFU CHEWIA ZA OVERLAY' + numOfSeries.toString());
 
         overlayState = Overlay.of(context);
@@ -131,12 +129,14 @@ class _ChewieVideoState extends State<ChewieVideo>
             builder: (BuildContext context) => Visibility(
                 visible: true,
                 child: SeriesInfoScreen(
-                    trainerID: widget.userTrainerDocument.data['trainerID'],
+                    trainerID: widget.userTrainerDocument.data()['trainerID'],
                     weekID: widget.weekID,
-                    sets: workoutExercisesWithSets[index].data['sets'],
+                    sets: workoutExercisesWithSets[index].data()['sets'],
                     workoutID: widget.workoutID,
                     seriesID: seriesID)));
-        numOfSeries.toString() == 'null' || numOfSeries > 1 ? overlayState.insert(overlayEntry) : print('Nije veci od 1');
+        numOfSeries.toString() == 'null' || numOfSeries > 1
+            ? overlayState.insert(overlayEntry)
+            : print('Nije veci od 1');
       }
     }
   }
@@ -213,9 +213,9 @@ class _ChewieVideoState extends State<ChewieVideo>
           builder: (BuildContext context) => Visibility(
               visible: true,
               child: SeriesInfoScreen(
-                trainerID: widget.userTrainerDocument.data['trainerID'],
+                trainerID: widget.userTrainerDocument.data()['trainerID'],
                 weekID: widget.weekID,
-                sets: workoutExercisesWithSets[index + 1].data['sets'],
+                sets: workoutExercisesWithSets[index + 1].data()['sets'],
                 workoutID: widget.workoutID,
                 seriesID: seriesID,
               )));

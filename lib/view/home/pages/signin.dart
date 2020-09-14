@@ -24,11 +24,10 @@ class _SigninState extends State<Signin> {
   var progressString = '';
 
   Future getTrainers() async {
-    var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection('Trainers').getDocuments(source: hasActiveConnection ? Source.serverAndCache : Source.cache);
-    return qn.documents;
+    var firestore = FirebaseFirestore.instance;
+    QuerySnapshot qn = await firestore.collection('Trainers').get();
+    return qn.docs;
   }
-
 
   @override
   void initState() {
@@ -36,7 +35,6 @@ class _SigninState extends State<Signin> {
     SignInViewModel().autoLogIn(context);
     InternetConnectivity().checkForConnectivity();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +55,9 @@ class _SigninState extends State<Signin> {
                             shrinkWrap: true,
                             itemCount: snapshot.data.length,
                             itemBuilder: (BuildContext context, int index) {
-                              String trainerName =
-                                  snapshot.data[index].data['trainer_name'];
+                              String trainerName = snapshot.data[index].data()[
+                                  'trainer_name']; // ##TODO: svaki snapshot ovako odraditi
                               return EmptyContainer();
-
                             });
                       }
                       return EmptyContainer();
@@ -80,6 +77,4 @@ class _SigninState extends State<Signin> {
       ),
     );
   }
-
 }
-

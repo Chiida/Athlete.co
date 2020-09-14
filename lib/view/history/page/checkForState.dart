@@ -75,10 +75,11 @@ class _CheckForHistoryStateState extends State<CheckForHistoryState> {
   newMethod() async {
     List<dynamic> currentUserDocuments = [];
     currentUserDocuments = await SignInViewModel()
-        .getCurrentUserDocument(widget.userDocument.data['userUID']);
+        .getCurrentUserDocument(widget.userDocument.data()['userUID']);
     setState(() {
       currentUserDocument = currentUserDocuments[0];
-      finishedWorkouts = currentUserDocument.data['workouts_finished_history'];
+      finishedWorkouts =
+          currentUserDocument.data()['workouts_finished_history'];
       finishedWeeksWithAthlete =
           HistoryViewModel().getfinishedWeeksWithAthlete(finishedWorkouts);
       gettingDone = true;

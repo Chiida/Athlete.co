@@ -315,9 +315,10 @@ class _CheckSubscriptionAndroidState extends State<CheckSubscriptionAndroid>
               .then((value) => Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                       builder: (_) => widget.userExist
-                          ? widget.currentUserDocument.data['trainer'] !=
+                          ? widget.currentUserDocument.data()['trainer'] !=
                                       null &&
-                                  widget.currentUserDocument.data['trainer'] !=
+                                  widget.currentUserDocument
+                                          .data()['trainer'] !=
                                       ''
                               ? TrainingPlan(
                                   userTrainerDocument:
@@ -378,23 +379,14 @@ class _CheckSubscriptionAndroidState extends State<CheckSubscriptionAndroid>
   onDoneLoading() {
     print(purchaseExist + ' IS PURCHASED FROM on done loading');
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) =>
-            purchaseExist == oneMonthID || purchaseExist == yearID
-                ? widget.userExist
-                    ? widget.currentUserDocument.data['trainer'] != null &&
-                            widget.currentUserDocument.data['trainer'] != ''
-                        ? TrainingPlan(
-                            userTrainerDocument:
-                                widget.currentUserTrainerDocument,
-                            userDocument: widget.currentUserDocument,
-                          )
-                        : ChooseAthlete(
-                            userDocument: widget.currentUserDocument,
-                            name: widget.userName,
-                            email: widget.userEmail,
-                            photo: widget.userPhoto,
-                            userUID: widget.userUID,
-                          )
+        builder: (_) => purchaseExist == oneMonthID || purchaseExist == yearID
+            ? widget.userExist
+                ? widget.currentUserDocument.data()['trainer'] != null &&
+                        widget.currentUserDocument.data()['trainer'] != ''
+                    ? TrainingPlan(
+                        userTrainerDocument: widget.currentUserTrainerDocument,
+                        userDocument: widget.currentUserDocument,
+                      )
                     : ChooseAthlete(
                         userDocument: widget.currentUserDocument,
                         name: widget.userName,
@@ -402,18 +394,24 @@ class _CheckSubscriptionAndroidState extends State<CheckSubscriptionAndroid>
                         photo: widget.userPhoto,
                         userUID: widget.userUID,
                       )
-                : SubscriptionClass(
-                    currentUserDocument: widget.currentUserDocument,
-                    currentUserTrainerDocument:
-                        widget.currentUserTrainerDocument,
-                    buildProductList: _buildProductList(),
-                    pageController: _pageController,
-                    userName: widget.userName,
-                    userEmail: widget.userEmail,
-                    userPhoto: widget.userPhoto,
+                : ChooseAthlete(
+                    userDocument: widget.currentUserDocument,
+                    name: widget.userName,
+                    email: widget.userEmail,
+                    photo: widget.userPhoto,
                     userUID: widget.userUID,
-                    userExist: widget.userExist,
-                  )));
+                  )
+            : SubscriptionClass(
+                currentUserDocument: widget.currentUserDocument,
+                currentUserTrainerDocument: widget.currentUserTrainerDocument,
+                buildProductList: _buildProductList(),
+                pageController: _pageController,
+                userName: widget.userName,
+                userEmail: widget.userEmail,
+                userPhoto: widget.userPhoto,
+                userUID: widget.userUID,
+                userExist: widget.userExist,
+              )));
   }
 
   @override

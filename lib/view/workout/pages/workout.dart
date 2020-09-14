@@ -61,14 +61,14 @@ class _WorkoutState extends State<Workout> {
     InternetConnectivity().checkForConnectivity();
     if (!widget.alreadyFinishedWorkout) {
       userNotes = WorkoutViewModel().getUserNotes(
-          widget.listOfNotes, widget.userDocument.data['userUID']);
+          widget.listOfNotes, widget.userDocument.data()['userUID']);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    _trainerName = widget.userTrainerDocument.data['trainer_name'];
+    _trainerName = widget.userTrainerDocument.data()['trainer_name'];
     _weekName = widget.weekName;
     _workoutName = widget.workoutName;
     return Scaffold(
@@ -141,7 +141,7 @@ class _WorkoutState extends State<Workout> {
   getSeries() {
     return FutureBuilder(
       future: WorkoutViewModel().getSeries(
-        widget.userTrainerDocument.data['trainerID'],
+        widget.userTrainerDocument.data()['trainerID'],
         widget.weekID,
         widget.workoutID,
         source,
@@ -153,12 +153,12 @@ class _WorkoutState extends State<Workout> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                serije.add(snapshot.data[index].data['seriesID']);
+                serije.add(snapshot.data[index].data()['seriesID']);
                 return EmptyContainer();
               });
         } else {
           return Container(
-            margin:EdgeInsets.only(top: SizeConfig.blockSizeVertical * 40),
+            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 40),
             child: Center(
               child: SubLoader().subLoader(),
             ),

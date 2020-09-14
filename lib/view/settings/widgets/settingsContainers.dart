@@ -42,12 +42,12 @@ checkAndDo(String isFrom, DocumentSnapshot userDocument, BuildContext context,
     isFromSettings = true;
     SettingsViewModel().changeAthlete(context, userDocument, userUID);
   } else if (isFrom == 'question') {
-    showSocialMediaDialog(context, userDocument.data['display_name']);
+    showSocialMediaDialog(context, userDocument.data()['display_name']);
   } else if (isFrom == 'terms') {
     SettingsViewModel().goToTermsAndPrivacy(context);
   } else if (isFrom == 'privacy') {
     /// navigate to privacy and check isFrom
   } else if (isFrom == 'logout') {
-    SettingsViewModel().logOut(context, userDocument['platform']);
+    SettingsViewModel().logOut(context, userDocument.data()['platform']);
   }
 }

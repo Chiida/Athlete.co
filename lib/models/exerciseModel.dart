@@ -17,21 +17,20 @@ class Exercise {
       this.tips,
       this.video,
       this.time,
-        this.repsDescription
-      });
+      this.repsDescription});
 
   factory Exercise.fromDocument(DocumentSnapshot doc) {
     return Exercise(
-        exerciseID: doc['exerciseID'],
-        name: doc['name'],
-        image: doc['image'],
-        isReps: doc['isReps'],
-        reps: doc['reps'],
-        rest: doc['rest'],
-        sets: doc['sets'],
-        tips: doc['tips'],
-        time: doc['time'],
-        repsDescription: doc['repsDescription'],
-        video: doc['video']);
+        exerciseID: doc.data()['exerciseID'],
+        name: doc.data()['name'],
+        image: doc.data()['image'],
+        isReps: doc.data()['isReps'],
+        reps: doc.data()['reps'],
+        rest: doc.data()['rest'],
+        sets: doc.data()['sets'],
+        tips: doc.data()['tips'],
+        time: doc.data()['time'],
+        repsDescription: doc.data()['repsDescription'],
+        video: doc.data()['video']);
   }
 }

@@ -59,7 +59,9 @@ class _CreateScreenViewState extends State<CreateScreenView> {
               margin: EdgeInsets.only(
                   top: focusKeyboard != null
                       ? focusKeyboard.hasFocus
-                          ? checkIsIosTablet(context) ? SizeConfig.blockSizeVertical * 20 : SizeConfig.blockSizeVertical * 0
+                          ? checkIsIosTablet(context)
+                              ? SizeConfig.blockSizeVertical * 20
+                              : SizeConfig.blockSizeVertical * 0
                           : SizeConfig.blockSizeVertical * 80
                       : SizeConfig.blockSizeVertical * 80),
               width: SizeConfig.blockSizeHorizontal * 100,
@@ -70,8 +72,8 @@ class _CreateScreenViewState extends State<CreateScreenView> {
                 child: DoneButton(
                   newNote: newNote,
                   notes: notes,
-                  userUID: widget.userDocument.data['userUID'],
-                  trainerID: widget.userTrainerDocument.data['trainerID'],
+                  userUID: widget.userDocument.data()['userUID'],
+                  trainerID: widget.userTrainerDocument.data()['trainerID'],
                   weekID: widget.weekID,
                   workoutID: widget.workoutID,
                   isOrientationFull: widget.isOrientationFull,

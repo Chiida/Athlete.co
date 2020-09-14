@@ -83,7 +83,7 @@ class _FinishWorkoutState extends State<FinishWorkout> {
                     height: SizeConfig.blockSizeVertical * 1.5,
                   ),
                   AnyQuestionContainer(
-                      userName: widget.userDocument.data['display_name']),
+                      userName: widget.userDocument.data()['display_name']),
                 ],
               ),
             ),

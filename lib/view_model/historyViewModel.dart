@@ -26,8 +26,7 @@ class HistoryViewModel implements HistoryInterface {
     QuerySnapshot qn = await firestore
         .collection('Trainers')
         .where('trainerID', isEqualTo: trainerID)
-        .getDocuments(
-            source: hasActiveConnection ? Source.serverAndCache : Source.cache);
+        .getDocuments();
     return qn.documents;
   }
 
@@ -39,8 +38,7 @@ class HistoryViewModel implements HistoryInterface {
         .document(trainerID)
         .collection('weeks')
         .where('weekID', isEqualTo: weekID)
-        .getDocuments(
-            source: hasActiveConnection ? Source.serverAndCache : Source.cache);
+        .getDocuments();
     return qn.documents;
   }
 
@@ -55,8 +53,7 @@ class HistoryViewModel implements HistoryInterface {
         .document(weekID)
         .collection('workouts')
         .where('workoutID', isEqualTo: workoutID)
-        .getDocuments(
-            source: hasActiveConnection ? Source.serverAndCache : Source.cache);
+        .getDocuments();
     return qn.documents;
   }
 
