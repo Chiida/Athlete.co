@@ -6,7 +6,7 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
+    <key>CFBundleIdentifier</key>
 	<string>com.tech.ios.Athlete</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
@@ -18,16 +18,32 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.83943705826-h64g9grqq9bm5jieeohv7u7bev4tvi9o</string>
-				<string>fb544521803159979</string>
-			</array>
-		</dict>
-	</array>
+
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb822212645190340</string>
+      </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>822212645190340</string>
+    <key>FacebookDisplayName</key>
+    <string>Athlete.co - MMA Workout Program</string>
+    
+<!--	<key>CFBundleURLTypes</key>-->
+<!--	<array>-->
+<!--		<dict>-->
+<!--			<key>CFBundleURLSchemes</key>-->
+<!--			<array>-->
+<!--				<string>com.googleusercontent.apps.83943705826-h64g9grqq9bm5jieeohv7u7bev4tvi9o</string>-->
+<!--				<string>fb544521803159979</string>-->
+<!--			</array>-->
+<!--		</dict>-->
+<!--	</array>-->
+    
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>

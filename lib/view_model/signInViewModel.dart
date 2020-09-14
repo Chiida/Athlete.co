@@ -14,12 +14,15 @@ import 'package:attt/view_model/authservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 // import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:http/http.dart' as http;
 
 /// dialog key
 final GlobalKey<State> _keyLoader = new GlobalKey<State>();
@@ -663,100 +666,109 @@ class SignInViewModel implements SignInInterface {
         .update({'workouts_finished': FieldValue.arrayUnion(listToKeep)});
   }
 
-  // @override
-  // signInWithFacebook(BuildContext context) async {
-  //   // Dialogs.showLoadingDialog(context, _keyLoader);
-  //   const String your_client_id = "573013163622508";
-  //   const String your_redirect_url =
-  //       "https://www.facebook.com/connect/login_success.html";
+  @override
+  signInWithFacebook(BuildContext context) async {
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logIn(['email']);
+    final token = result.accessToken.token;
+    final graphResponse = await http.get(
+        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+    print(graphResponse.body);
 
-  //   String result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //         builder: (context) => CustomWebView(
-  //               selectedUrl:
-  //                   'https://www.facebook.com/dialog/oauth?client_id=$your_client_id&redirect_uri=$your_redirect_url&response_type=token&scope=email,public_profile,',
-  //             ),
-  //         maintainState: true),
-  //   );
+    if (result.status == FacebookLoginStatus.loggedIn) {
+      final credential = FacebookAuthProvider.credential(token);
+      _firebaseAuth.signInWithCredential(credential);
+    }
+    // // Dialogs.showLoadingDialog(context, _keyLoader);
+    // const String your_client_id = "573013163622508";
+    // const String your_redirect_url =
+    //     "https://www.facebook.com/connect/login_success.html";
 
-  //   if (result != null) {
-  //     try {
-  //       final facebookAuthCred =
-  //           FacebookAuthProvider.getCredential(accessToken: result);
-  //       final user = await _firebaseAuth.signInWithCredential(facebookAuthCred);
-  //       currentUser = user.user;
-  //       //Populating variables used later in application
-  //       userEmail = currentUser.email;
-  //       userName = currentUser.displayName;
-  //       userPhoto = currentUser.photoUrl;
-  //       String userUIDFacebook = currentUser.uid;
-  //       userUIDPref = userUIDFacebook;
+    // String result = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => CustomWebView(
+    //             selectedUrl:
+    //                 'https://www.facebook.com/dialog/oauth?client_id=$your_client_id&redirect_uri=$your_redirect_url&response_type=token&scope=email,public_profile,',
+    //           ),
+    //       maintainState: true),
+    // );
 
-  //       loginUser();
+    // if (result != null) {
+    //   try {
+    //     final facebookAuthCred = FacebookAuthProvider.credential(result);
+    //     final user = await _firebaseAuth.signInWithCredential(facebookAuthCred);
+    //     currentUser = user.user;
+    //     //Populating variables used later in application
+    //     userEmail = currentUser.email;
+    //     userName = currentUser.displayName;
+    //     userPhoto = currentUser.photoURL;
+    //     String userUIDFacebook = currentUser.uid;
+    //     userUIDPref = userUIDFacebook;
 
-  //       ///Checking if user already exists in database
-  //       ///
-  //       ///If user exists, users info is collected
-  //       ///If user does not exist, user is created
-  //       bool userExist = await doesUserAlreadyExist(userUIDFacebook);
-  //       if (!userExist) {
-  //         createUser(
-  //             userName, userEmail, userPhoto, userUIDFacebook, 'Facebook');
-  //         currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
-  //         currentUserDocument = currentUserDocuments[0];
-  //       } else {
-  //         currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
-  //         currentUserDocument = currentUserDocuments[0];
-  //         if (currentUserDocument.data()['trainer'] != null &&
-  //             currentUserDocument.data()['trainer'] != '') {
-  //           currentUserTrainerDocuments = await getCurrentUserTrainer(
-  //               currentUserDocument.data()['trainer']);
-  //           currentUserTrainerDocument = currentUserTrainerDocuments[0];
-  //           totalWeeks = await getCurrentUserTrainerWeeks(
-  //               currentUserTrainerDocument.data()['trainerID']);
-  //           currentUserTrainerName =
-  //               currentUserTrainerDocument.data()['trainer_name'];
-  //           currentUserTrainingPlanDuration =
-  //               currentUserTrainerDocument.data()['training_plan_duration'];
-  //           currentUserTrainingPlan =
-  //               currentUserTrainerDocument.data()['training_plan_name'];
-  //         }
-  //       }
+    //     loginUser();
 
-  //       ///Navigating logged user into application
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //           CardAnimationTween(
-  //             widget: Platform.isIOS
-  //                 ? CheckSubscription(
-  //                     currentUserDocument: currentUserDocument,
-  //                     currentUserTrainerDocument: currentUserTrainerDocument,
-  //                     userName: userName,
-  //                     userEmail: userEmail,
-  //                     userExist: userExist,
-  //                     userPhoto: userPhoto,
-  //                     userUID: userUIDFacebook,
-  //                   )
-  //                 : CheckSubscriptionAndroid(
-  //                     currentUserDocument: currentUserDocument,
-  //                     currentUserTrainerDocument: currentUserTrainerDocument,
-  //                     userName: userName,
-  //                     userEmail: userEmail,
-  //                     userExist: userExist,
-  //                     userPhoto: userPhoto,
-  //                     userUID: userUIDFacebook,
-  //                   ),
-  //           ),
-  //           (Route<dynamic> route) => false);
+    //     ///Checking if user already exists in database
+    //     ///
+    //     ///If user exists, users info is collected
+    //     ///If user does not exist, user is created
+    //     bool userExist = await doesUserAlreadyExist(userUIDFacebook);
+    //     if (!userExist) {
+    //       createUser(
+    //           userName, userEmail, userPhoto, userUIDFacebook, 'Facebook');
+    //       currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
+    //       currentUserDocument = currentUserDocuments[0];
+    //     } else {
+    //       currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
+    //       currentUserDocument = currentUserDocuments[0];
+    //       if (currentUserDocument.data()['trainer'] != null &&
+    //           currentUserDocument.data()['trainer'] != '') {
+    //         currentUserTrainerDocuments = await getCurrentUserTrainer(
+    //             currentUserDocument.data()['trainer']);
+    //         currentUserTrainerDocument = currentUserTrainerDocuments[0];
+    //         totalWeeks = await getCurrentUserTrainerWeeks(
+    //             currentUserTrainerDocument.data()['trainerID']);
+    //         currentUserTrainerName =
+    //             currentUserTrainerDocument.data()['trainer_name'];
+    //         currentUserTrainingPlanDuration =
+    //             currentUserTrainerDocument.data()['training_plan_duration'];
+    //         currentUserTrainingPlan =
+    //             currentUserTrainerDocument.data()['training_plan_name'];
+    //       }
+    //     }
 
-  //       ///Logging user to shared preference with aim to
-  //       ///
-  //       ///have the user later for autologging
-  //       ///return currentUser;
-  //     } catch (e) {
-  //       print('ERRRRRRRRRRRRRRRROOOOOOOOOORRRRRRRRRRRRRRRR    ' + e.toString());
-  //     }
-  //   }
-  // }
+    //     ///Navigating logged user into application
+    //     Navigator.of(context).pushAndRemoveUntil(
+    //         CardAnimationTween(
+    //           widget: Platform.isIOS
+    //               ? CheckSubscription(
+    //                   currentUserDocument: currentUserDocument,
+    //                   currentUserTrainerDocument: currentUserTrainerDocument,
+    //                   userName: userName,
+    //                   userEmail: userEmail,
+    //                   userExist: userExist,
+    //                   userPhoto: userPhoto,
+    //                   userUID: userUIDFacebook,
+    //                 )
+    //               : CheckSubscriptionAndroid(
+    //                   currentUserDocument: currentUserDocument,
+    //                   currentUserTrainerDocument: currentUserTrainerDocument,
+    //                   userName: userName,
+    //                   userEmail: userEmail,
+    //                   userExist: userExist,
+    //                   userPhoto: userPhoto,
+    //                   userUID: userUIDFacebook,
+    //                 ),
+    //         ),
+    //         (Route<dynamic> route) => false);
 
+    //     ///Logging user to shared preference with aim to
+    //     ///
+    //     ///have the user later for autologging
+    //     ///return currentUser;
+    //   } catch (e) {
+    //     print('ERRRRRRRRRRRRRRRROOOOOOOOOORRRRRRRRRRRRRRRR    ' + e.toString());
+    //   }
+    // }
+  }
 }

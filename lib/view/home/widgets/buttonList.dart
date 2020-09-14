@@ -25,10 +25,10 @@ Widget buttonList(BuildContext context) {
         SizedBox(
           height: SizeConfig.blockSizeVertical * 1.3,
         ),
-        // facebookButton(context),
-        // SizedBox(
-        //   height: SizeConfig.blockSizeVertical * 1.3,
-        // ),
+        facebookButton(context),
+        SizedBox(
+          height: SizeConfig.blockSizeVertical * 1.3,
+        ),
         appleSignInAvailable.isAvailable
             ? appleSignInButton(context)
             : EmptyContainer(),
