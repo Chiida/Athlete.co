@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 Widget userImage(String image) {
   return Container(
-    height: 90.0,
-    width: 90,
-    padding: EdgeInsets.all(8),
+    // height: 90.0,
+    // width: 90,
+    // padding: EdgeInsets.all(8),
     child: CircleAvatar(
       backgroundColor: MyColors().black,
-      radius: 28.0,
+      radius: 30.0,
       backgroundImage: NetworkImage(image),
     ),
   );

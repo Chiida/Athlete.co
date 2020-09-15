@@ -35,9 +35,9 @@ Widget noteButton(
       color: Colors.white,
       child: InkWell(
         onTap: () {
-          if(_counter == 0) {
+          if (_counter == 0) {
             /// ukoliko je timer zavrsen nemoj ga pauzirati
-            if(colorStatePaused == 'green') {
+            if (colorStatePaused == 'green') {
               print('colorStatePaused = $colorStatePaused');
             } else {
               pauseTimer();
@@ -73,11 +73,10 @@ Widget noteButton(
             }
             _counter = 1;
             Timer(Duration(seconds: 1), () {
-               _counter = 0;
-               print('Counter je opet $_counter');
+              _counter = 0;
+              print('Counter je opet $_counter');
             });
           }
-
         },
         child: Container(
           child: Center(

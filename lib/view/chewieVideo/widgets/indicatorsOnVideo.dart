@@ -173,6 +173,7 @@ class _IndicatorsOnVideoState extends State<IndicatorsOnVideo>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Stack(
+                        // fit: StackFit.loose,
                         children: <Widget>[
                           BorderUpDown().focusTimeBorderUp(context),
                           BorderUpDown().focusTimeBorderDown(context),
@@ -284,10 +285,11 @@ class _IndicatorsOnVideoState extends State<IndicatorsOnVideo>
                       RaisedButton(
                         color: Colors.green,
                         onPressed: () {
-                          if(colorStatePaused == 'green') {
-                             colorStatePaused = 'red';
-                             print(colorStatePaused + 'CSP');
+                          if (colorStatePaused == 'green') {
+                            colorStatePaused = 'red';
+                            print(colorStatePaused + 'CSP');
                           }
+
                           ///  then convert time that is choosen to seconds in [timerMaxSeconds]
                           setState(() {
                             timerMaxSeconds = isInitial
@@ -493,7 +495,7 @@ class _IndicatorsOnVideoState extends State<IndicatorsOnVideo>
     super.didUpdateWidget(oldWidget);
     if (widget.isOrientationFull) {
       /// ukoliko je timer zavrsen nemoj ga pauzirati
-      if(colorStatePaused == 'green') {
+      if (colorStatePaused == 'green') {
         print('colorStatePaused = $colorStatePaused');
       } else {
         pauseTimer();
@@ -523,8 +525,8 @@ class _IndicatorsOnVideoState extends State<IndicatorsOnVideo>
                   widget.playNext,
                   widget.playPrevious,
                   pauseTimer,
-            resetTimer,
-            checkAndArrangeTime,
+                  resetTimer,
+                  checkAndArrangeTime,
                   _counter,
                   widget.index,
                   widget.isReps,
@@ -604,7 +606,7 @@ class _IndicatorsOnVideoState extends State<IndicatorsOnVideo>
                           playTimer,
                           pauseTimer,
                           resetTimer,
-            checkAndArrangeTime,
+                          checkAndArrangeTime,
                           _counter,
                           widget.index,
                           widget.isReps,
@@ -681,4 +683,3 @@ bool checkIsIosTablet(BuildContext context) {
     return false;
   }
 }
-

@@ -52,7 +52,6 @@ Widget repsType(
   userTrainerDocument,
   Timer timer,
 ) {
-
   isFromRepsOnly = true;
   return MediaQuery.of(context).orientation == Orientation.portrait
       ? Column(
@@ -137,7 +136,7 @@ Widget repsType(
               margin: EdgeInsets.only(
                   top: repsDescription != null && repsDescription != ''
                       ? SizeConfig.blockSizeVertical * 6
-                      : SizeConfig.blockSizeVertical * 7.5),
+                      : SizeConfig.blockSizeVertical * 5),
               child: Column(
                 children: <Widget>[
                   repsDescription != null && repsDescription != ''
@@ -249,7 +248,9 @@ Widget repsType(
                     ),
                   ),
                   SizedBox(
-                    height: checkIsIosTablet(context) ? SizeConfig.blockSizeVertical * 1  : SizeConfig.blockSizeVertical * 2,
+                    height: checkIsIosTablet(context)
+                        ? SizeConfig.blockSizeVertical * 1
+                        : SizeConfig.blockSizeVertical * 2,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -262,7 +263,7 @@ Widget repsType(
                               context,
                               playPrevious,
                               resetTimer,
-                        checkAndArrangeTime,
+                              checkAndArrangeTime,
                             ),
                       Container(
                         child: Row(

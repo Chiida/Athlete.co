@@ -15,18 +15,28 @@ Widget trainingPlanHeadline(
   List<String> nameSurname = name.split(' ');
   String justName = nameSurname[0];
   String image = userDocument.data()['image'];
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: <Widget>[
-      userImage(image),
-      SizedBox(
-        width: MediaQuery.of(context).orientation == Orientation.portrait
-            ? SizeConfig.blockSizeHorizontal * 4.3
-            : SizeConfig.blockSizeHorizontal * 3.5,
-      ),
-      userName(justName, context),
-      settingsIcon(userDocument, userUID, context)
-    ],
+  return ListTile(
+    contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+    leading: userImage(image),
+    title: Center(child: userName(justName, context)),
+    trailing: settingsIcon(userDocument, userUID, context),
   );
+
+  // Row(
+  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //   // mainAxisAlignment: MainAxisAlignment.center,
+
+  //   crossAxisAlignment: CrossAxisAlignment.center,
+  //   children: <Widget>[
+  //     userImage(image),
+  //     // SizedBox(
+  //     //   width: MediaQuery.of(context).orientation == Orientation.portrait
+  //     //       ? SizeConfig.blockSizeHorizontal * 14.3
+  //     //       : SizeConfig.blockSizeHorizontal * 13.5,
+  //     // ),
+  //     Center(child: userName(justName, context)),
+  //     // Spacer(),
+  //     settingsIcon(userDocument, userUID, context)
+  //   ],
+  // );
 }

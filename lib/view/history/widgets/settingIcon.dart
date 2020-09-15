@@ -10,12 +10,17 @@ Widget settingsIcon(
     DocumentSnapshot userDocument, String userUID, BuildContext context) {
   return Container(
     margin: EdgeInsets.only(
-        right: checkIsIosTablet(context)
-            ? SizeConfig.blockSizeHorizontal * 5
-            : SizeConfig.blockSizeHorizontal * 0),
-    alignment: Alignment.centerRight,
+        // right: SizeConfig.blockSizeHorizontal * 5,
+        // bottom: SizeConfig.blockSizeVertical + 1
+        // checkIsIosTablet(context)
+        //     ? SizeConfig.blockSizeHorizontal * 5
+        //     : SizeConfig.blockSizeHorizontal * 0
+        ),
+    // alignment: Alignment.centerRight,
     //margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 8),
     child: IconButton(
+      padding: EdgeInsets.all(0),
+      // alignment: Alignment.center,
       onPressed: () => Navigator.of(context).push(CardAnimationTween(
           widget: SettingsPage(
         userDocument: userDocument,
@@ -40,4 +45,3 @@ bool checkIsIosTablet(BuildContext context) {
     return false;
   }
 }
-

@@ -22,39 +22,39 @@ class HistoryViewModel implements HistoryInterface {
 
   @override
   Future<List<DocumentSnapshot>> getTainerName(String trainerID) async {
-    var firestore = Firestore.instance;
+    var firestore = FirebaseFirestore.instance;
     QuerySnapshot qn = await firestore
         .collection('Trainers')
         .where('trainerID', isEqualTo: trainerID)
-        .getDocuments();
-    return qn.documents;
+        .get();
+    return qn.docs;
   }
 
   @override
   Future getWeekName(String trainerID, String weekID) async {
-    var firestore = Firestore.instance;
+    var firestore = FirebaseFirestore.instance;
     QuerySnapshot qn = await firestore
         .collection('Trainers')
-        .document(trainerID)
+        .doc(trainerID)
         .collection('weeks')
         .where('weekID', isEqualTo: weekID)
-        .getDocuments();
-    return qn.documents;
+        .get();
+    return qn.docs;
   }
 
   @override
   Future getWorkoutName(
       String trainerID, String weekID, String workoutID) async {
-    var firestore = Firestore.instance;
+    var firestore = FirebaseFirestore.instance;
     QuerySnapshot qn = await firestore
         .collection('Trainers')
-        .document(trainerID)
+        .doc(trainerID)
         .collection('weeks')
-        .document(weekID)
+        .doc(weekID)
         .collection('workouts')
         .where('workoutID', isEqualTo: workoutID)
-        .getDocuments();
-    return qn.documents;
+        .get();
+    return qn.docs;
   }
 
   @override

@@ -12,7 +12,7 @@ class BorderUpDown {
       margin: EdgeInsets.only(
           top: MediaQuery.of(context).size.width < 400
               ? SizeConfig.blockSizeVertical * 7.7
-              : SizeConfig.blockSizeVertical * 5.8,
+              : SizeConfig.blockSizeVertical * 4,
           left: MediaQuery.of(context).size.width < 400
               ? SizeConfig.blockSizeHorizontal * 8.3
               : SizeConfig.blockSizeHorizontal * 7),
@@ -32,7 +32,7 @@ class BorderUpDown {
       margin: EdgeInsets.only(
           top: MediaQuery.of(context).size.width < 400
               ? SizeConfig.blockSizeVertical * 12.7
-              : SizeConfig.blockSizeVertical * 9.8,
+              : SizeConfig.blockSizeVertical * 8,
           left: MediaQuery.of(context).size.width < 400
               ? SizeConfig.blockSizeHorizontal * 8.3
               : SizeConfig.blockSizeHorizontal * 7),

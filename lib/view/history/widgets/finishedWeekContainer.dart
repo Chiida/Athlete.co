@@ -18,7 +18,8 @@ Widget finishedWeekContainer(
         SizedBox(
           height: SizeConfig.blockSizeVertical * 2,
         ),
-        finishedWorkoutsHistoryList(workoutsList, finishedWeeksWithAthlete, index),
+        finishedWorkoutsHistoryList(
+            workoutsList, finishedWeeksWithAthlete, index),
       ],
     ),
   );

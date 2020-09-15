@@ -16,7 +16,7 @@ Widget userName(String justName, BuildContext context) {
             : SizeConfig.blockSizeVertical * 6,
         fontWeight: FontWeight.w500,
       ),
-      textAlign: TextAlign.left,
+      textAlign: TextAlign.center,
     ),
   );
 }

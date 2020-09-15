@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:attt/utils/emptyContainer.dart';
@@ -12,26 +10,26 @@ import 'package:video_box/video.controller.dart';
 int _counter = 0;
 
 Widget nameWidget(
-    bool infoClicked,
-    goBackToChewie,
-    isFromPortrait,
-    BuildContext context,
-    VideoController controller,
-    String name,
-    String video,
-    colorStatePaused,
-    List<dynamic> exTips,
-    int isReps,
-    index,
-    listLenght,
-    Function pauseTimer,
-    ) {
+  bool infoClicked,
+  goBackToChewie,
+  isFromPortrait,
+  BuildContext context,
+  VideoController controller,
+  String name,
+  String video,
+  colorStatePaused,
+  List<dynamic> exTips,
+  int isReps,
+  index,
+  listLenght,
+  Function pauseTimer,
+) {
   SizeConfig().init(context);
   return GestureDetector(
     onTap: () {
-      if(_counter == 0) {
+      if (_counter == 0) {
         /// ukoliko je timer zavrsen nemoj ga pauzirati
-        if(colorStatePaused == 'green') {
+        if (colorStatePaused == 'green') {
           print('colorStatePaused = $colorStatePaused');
         } else {
           pauseTimer();
@@ -61,7 +59,6 @@ Widget nameWidget(
           print('Counter je opet $_counter');
         });
       }
-
     },
     child: Container(
       alignment: Alignment.center,
@@ -80,7 +77,6 @@ Widget nameWidget(
     ),
   );
 }
-
 
 //import 'package:attt/utils/emptyContainer.dart';
 //import 'package:attt/utils/size_config.dart';
