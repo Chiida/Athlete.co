@@ -31,16 +31,16 @@ class TrainingPlanViewModel implements TrainingPlanInterface {
 
   @override
   Future getWorkouts(String trainerID, String weekID) async {
-    var firestore = Firestore.instance;
+    var firestore = FirebaseFirestore.instance;
     QuerySnapshot qn = await firestore
         .collection('Trainers')
-        .document(trainerID)
+        .doc(trainerID)
         .collection('weeks')
-        .document(weekID)
+        .doc(weekID)
         .collection('workouts')
         .orderBy('order')
-        .getDocuments();
-    return qn.documents;
+        .get();
+    return qn.docs;
   }
 
   @override

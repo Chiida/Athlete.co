@@ -37,7 +37,8 @@ Widget pageOne(
         height: SizeConfig.blockSizeVertical * 100,
         color: MyColors().lightBlack.withOpacity(0.5),
       ),
-      //      /// GO IN BUTTON (comment for apks and release)
+
+      /// GO IN BUTTON (comment for apks and release)
       Container(
         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
         child: RaisedButton(
@@ -65,6 +66,7 @@ Widget pageOne(
                         userUID: userUID,
                       )))),
       ),
+
       Container(
         width: SizeConfig.blockSizeHorizontal * 100,
         alignment: Alignment.bottomCenter,

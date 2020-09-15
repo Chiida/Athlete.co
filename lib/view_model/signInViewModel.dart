@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
@@ -413,12 +414,12 @@ class SignInViewModel implements SignInInterface {
     print("User Sign Out");
   }
 
-  // @override
-  // signOutFacebook(BuildContext context) async {
-  //   currentUser = null;
-  //   logout();
-  //   print("User Sign Out Faceboook");
-  // }
+  @override
+  signOutFacebook(BuildContext context) async {
+    currentUser = null;
+    logout();
+    print("User Sign Out Faceboook");
+  }
 
   ///Method that auotlogins a user if data and cach are not cleared
   ///
@@ -673,102 +674,94 @@ class SignInViewModel implements SignInInterface {
     final token = result.accessToken.token;
     final graphResponse = await http.get(
         'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
-    print(graphResponse.body);
+    print('Facebookk response:');
+    final fbUserInfo = json.decode(graphResponse.body);
+    print(fbUserInfo['first_name']);
+    print(fbUserInfo['id']);
+    print(fbUserInfo['email']);
 
-    if (result.status == FacebookLoginStatus.loggedIn) {
-      final credential = FacebookAuthProvider.credential(token);
-      _firebaseAuth.signInWithCredential(credential);
+    if (token != null) {
+      try {
+        final facebookAuthCred = FacebookAuthProvider.credential(token);
+        final user = await _firebaseAuth.signInWithCredential(facebookAuthCred);
+        currentUser = user.user;
+        final fbUserInfo = json.decode(graphResponse.body);
+        print(fbUserInfo['first_name']);
+        print(fbUserInfo['id']);
+        print(fbUserInfo['email']);
+        print('a sad test ispita maila currentmaila:');
+        print(currentUser.email);
+
+        //Populating variables used later in application
+        userEmail = currentUser.email;
+        userName = currentUser.displayName;
+        userPhoto = currentUser.photoURL;
+        String userUIDFacebook = currentUser.uid;
+        userUIDPref = userUIDFacebook;
+
+        loginUser();
+
+        ///Checking if user already exists in database
+        ///
+        ///If user exists, users info is collected
+        ///If user does not exist, user is created
+        bool userExist = await doesUserAlreadyExist(userUIDFacebook);
+        if (!userExist) {
+          createUser(
+              userName, userEmail, userPhoto, userUIDFacebook, 'Facebook');
+          currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
+          currentUserDocument = currentUserDocuments[0];
+        } else {
+          currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
+          currentUserDocument = currentUserDocuments[0];
+          if (currentUserDocument.data()['trainer'] != null &&
+              currentUserDocument.data()['trainer'] != '') {
+            currentUserTrainerDocuments = await getCurrentUserTrainer(
+                currentUserDocument.data()['trainer']);
+            currentUserTrainerDocument = currentUserTrainerDocuments[0];
+            totalWeeks = await getCurrentUserTrainerWeeks(
+                currentUserTrainerDocument.data()['trainerID']);
+            currentUserTrainerName =
+                currentUserTrainerDocument.data()['trainer_name'];
+            currentUserTrainingPlanDuration =
+                currentUserTrainerDocument.data()['training_plan_duration'];
+            currentUserTrainingPlan =
+                currentUserTrainerDocument.data()['training_plan_name'];
+          }
+        }
+
+        ///Navigating logged user into application
+        Navigator.of(context).pushAndRemoveUntil(
+            CardAnimationTween(
+              widget: Platform.isIOS
+                  ? CheckSubscription(
+                      currentUserDocument: currentUserDocument,
+                      currentUserTrainerDocument: currentUserTrainerDocument,
+                      userName: userName,
+                      userEmail: userEmail,
+                      userExist: userExist,
+                      userPhoto: userPhoto,
+                      userUID: userUIDFacebook,
+                    )
+                  : CheckSubscriptionAndroid(
+                      currentUserDocument: currentUserDocument,
+                      currentUserTrainerDocument: currentUserTrainerDocument,
+                      userName: userName,
+                      userEmail: userEmail,
+                      userExist: userExist,
+                      userPhoto: userPhoto,
+                      userUID: userUIDFacebook,
+                    ),
+            ),
+            (Route<dynamic> route) => false);
+
+        ///Logging user to shared preference with aim to
+        ///
+        ///have the user later for autologging
+        ///return currentUser;
+      } catch (e) {
+        print('ERRRRRRRRRRRRRRRROOOOOOOOOORRRRRRRRRRRRRRRR    ' + e.toString());
+      }
     }
-    // // Dialogs.showLoadingDialog(context, _keyLoader);
-    // const String your_client_id = "573013163622508";
-    // const String your_redirect_url =
-    //     "https://www.facebook.com/connect/login_success.html";
-
-    // String result = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => CustomWebView(
-    //             selectedUrl:
-    //                 'https://www.facebook.com/dialog/oauth?client_id=$your_client_id&redirect_uri=$your_redirect_url&response_type=token&scope=email,public_profile,',
-    //           ),
-    //       maintainState: true),
-    // );
-
-    // if (result != null) {
-    //   try {
-    //     final facebookAuthCred = FacebookAuthProvider.credential(result);
-    //     final user = await _firebaseAuth.signInWithCredential(facebookAuthCred);
-    //     currentUser = user.user;
-    //     //Populating variables used later in application
-    //     userEmail = currentUser.email;
-    //     userName = currentUser.displayName;
-    //     userPhoto = currentUser.photoURL;
-    //     String userUIDFacebook = currentUser.uid;
-    //     userUIDPref = userUIDFacebook;
-
-    //     loginUser();
-
-    //     ///Checking if user already exists in database
-    //     ///
-    //     ///If user exists, users info is collected
-    //     ///If user does not exist, user is created
-    //     bool userExist = await doesUserAlreadyExist(userUIDFacebook);
-    //     if (!userExist) {
-    //       createUser(
-    //           userName, userEmail, userPhoto, userUIDFacebook, 'Facebook');
-    //       currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
-    //       currentUserDocument = currentUserDocuments[0];
-    //     } else {
-    //       currentUserDocuments = await getCurrentUserDocument(userUIDFacebook);
-    //       currentUserDocument = currentUserDocuments[0];
-    //       if (currentUserDocument.data()['trainer'] != null &&
-    //           currentUserDocument.data()['trainer'] != '') {
-    //         currentUserTrainerDocuments = await getCurrentUserTrainer(
-    //             currentUserDocument.data()['trainer']);
-    //         currentUserTrainerDocument = currentUserTrainerDocuments[0];
-    //         totalWeeks = await getCurrentUserTrainerWeeks(
-    //             currentUserTrainerDocument.data()['trainerID']);
-    //         currentUserTrainerName =
-    //             currentUserTrainerDocument.data()['trainer_name'];
-    //         currentUserTrainingPlanDuration =
-    //             currentUserTrainerDocument.data()['training_plan_duration'];
-    //         currentUserTrainingPlan =
-    //             currentUserTrainerDocument.data()['training_plan_name'];
-    //       }
-    //     }
-
-    //     ///Navigating logged user into application
-    //     Navigator.of(context).pushAndRemoveUntil(
-    //         CardAnimationTween(
-    //           widget: Platform.isIOS
-    //               ? CheckSubscription(
-    //                   currentUserDocument: currentUserDocument,
-    //                   currentUserTrainerDocument: currentUserTrainerDocument,
-    //                   userName: userName,
-    //                   userEmail: userEmail,
-    //                   userExist: userExist,
-    //                   userPhoto: userPhoto,
-    //                   userUID: userUIDFacebook,
-    //                 )
-    //               : CheckSubscriptionAndroid(
-    //                   currentUserDocument: currentUserDocument,
-    //                   currentUserTrainerDocument: currentUserTrainerDocument,
-    //                   userName: userName,
-    //                   userEmail: userEmail,
-    //                   userExist: userExist,
-    //                   userPhoto: userPhoto,
-    //                   userUID: userUIDFacebook,
-    //                 ),
-    //         ),
-    //         (Route<dynamic> route) => false);
-
-    //     ///Logging user to shared preference with aim to
-    //     ///
-    //     ///have the user later for autologging
-    //     ///return currentUser;
-    //   } catch (e) {
-    //     print('ERRRRRRRRRRRRRRRROOOOOOOOOORRRRRRRRRRRRRRRR    ' + e.toString());
-    //   }
-    // }
   }
 }

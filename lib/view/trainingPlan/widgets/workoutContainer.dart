@@ -24,16 +24,16 @@ Widget workoutContainer(
         userDocument,
         userTrainerDocument,
         userTrainerDocument.data()['trainerID'],
-        snapshot2.data()[index2]['name'],
+        snapshot2.data[index2].data()['name'],
         snapshot.data[index].data()['weekID'],
-        snapshot2.data()[index2].data()['workoutID'],
-        snapshot2.data()[index2].data()['warmup'],
+        snapshot2.data[index2].data()['workoutID'],
+        snapshot2.data[index2].data()['warmup'],
         context,
         weekName,
-        snapshot2.data()[index2].data()['notes'],
+        snapshot2.data[index2].data()['notes'],
         true,
         workoutIDs.contains(workoutID),
-        snapshot2.data()[index2].data()['tag'],
+        snapshot2.data[index2].data()['tag'],
       );
     },
     child: Container(
@@ -48,29 +48,19 @@ Widget workoutContainer(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              snapshot
-                      .data()[index]
+              snapshot.data[index]
                       .data()['name']
                       .toString()
                       .substring(0, 1)
                       .toUpperCase() +
-                  snapshot
-                      .data()[index]
-                      .data()['name']
-                      .toString()
-                      .substring(1) +
+                  snapshot.data[index].data()['name'].toString().substring(1) +
                   ' ' +
-                  snapshot2
-                      .data()[index2]
+                  snapshot2.data[index2]
                       .data()['name']
                       .toString()
                       .substring(0, 1)
                       .toUpperCase() +
-                  snapshot2
-                      .data()[index2]
-                      .data()['name']
-                      .toString()
-                      .substring(1),
+                  snapshot2.data[index2].data()['name'].toString().substring(1),
               style: TextStyle(
                   color: workoutIDs.contains(workoutID)
                       ? Colors.white60
@@ -83,12 +73,12 @@ Widget workoutContainer(
               height: SizeConfig.blockSizeVertical + 0.01,
             ),
             Text(
-              snapshot2
-                      .data()[index2]['tag']
+              snapshot2.data[index2]
+                      .data()['tag']
                       .toString()
                       .substring(0, 1)
                       .toUpperCase() +
-                  snapshot2.data()[index2]['tag'].toString().substring(1),
+                  snapshot2.data[index2].data()['tag'].toString().substring(1),
               style: TextStyle(
                   color: workoutIDs.contains(workoutID)
                       ? Colors.white60
@@ -101,7 +91,7 @@ Widget workoutContainer(
               height: SizeConfig.blockSizeVertical + 0.01,
             ),
             Text(
-              snapshot2.data()[index2].data()['numberOfExercises'].toString() +
+              snapshot2.data[index2].data()['numberOfExercises'].toString() +
                   ' Exercises',
               style: TextStyle(
                   color: workoutIDs.contains(workoutID)

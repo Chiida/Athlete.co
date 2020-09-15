@@ -31,8 +31,8 @@ Widget listOfWorkouts(
               shrinkWrap: true,
               itemCount: snapshot2.data.length,
               itemBuilder: (BuildContext context, int index2) {
-                String workoutID = snapshot2.data()[index2].data()['workoutID'];
-                numOfSeries = snapshot2.data()[index2].data()['num_of_series'];
+                String workoutID = snapshot2.data[index2].data()['workoutID'];
+                numOfSeries = snapshot2.data[index2].data()['num_of_series'];
                 print(numOfSeries.toString() + 'NUM OF SERIES');
                 return workoutContainer(
                     userDocument,

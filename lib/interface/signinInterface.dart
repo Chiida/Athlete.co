@@ -7,8 +7,10 @@ abstract class SignInInterface {
   // );
   signInWithGoogle(BuildContext context);
   signOutGoogle(BuildContext context);
-  // signInWithFacebook(BuildContext context);
-  // signOutFacebook(BuildContext context,);
+  signInWithFacebook(BuildContext context);
+  signOutFacebook(
+    BuildContext context,
+  );
   autoLogIn(BuildContext context);
   logout();
   loginUser();
