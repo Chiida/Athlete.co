@@ -68,7 +68,7 @@ class _SigninState extends State<Signin> {
               ),
               logo(context),
               SizedBox(
-                height: SizeConfig.blockSizeVertical * 35,
+                height: SizeConfig.blockSizeVertical * 40,
               ),
               buttonList(context)
             ],
