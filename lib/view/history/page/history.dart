@@ -50,20 +50,27 @@ class _HistoryState extends State<History> {
             ),
             child: Column(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 90.0,
-                      width: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? SizeConfig.blockSizeHorizontal * 4.3
-                          : SizeConfig.blockSizeHorizontal * 3.5,
-                    ),
-                    settingsIcon(widget.userDocument, widget.userUID, context)
-                  ],
-                ),
+                ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+                    trailing: settingsIcon(
+                        widget.userDocument, widget.userUID, context)),
+
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: <Widget>[
+                //     SizedBox(
+                //       height: 90.0,
+                //       width: MediaQuery.of(context).orientation ==
+                //               Orientation.portrait
+                //           ? SizeConfig.blockSizeHorizontal * 4.3
+                //           : SizeConfig.blockSizeHorizontal * 3.5,
+                //     ),
+                //     settingsIcon(widget.userDocument, widget.userUID, context)
+                //   ],
+                // ),
+
                 widget.finishedWorkouts.isEmpty
                     ? historyEmptyState()
                     : historyList(widget.finishedWeeksWithAthlete,
