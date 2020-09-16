@@ -8,10 +8,8 @@ import 'package:attt/utils/size_config.dart';
 import 'package:attt/view/home/widgets/facebookButton.dart';
 import 'package:attt/view/home/widgets/googleButton.dart';
 import 'package:attt/view/home/widgets/privacyTerms.dart';
-import 'package:attt/view/home/widgets/twitterButton.dart';
 import 'package:attt/view_model/signInViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 Widget buttonList(BuildContext context) {
@@ -32,7 +30,6 @@ Widget buttonList(BuildContext context) {
         appleSignInAvailable.isAvailable
             ? appleSignInButton(context)
             : EmptyContainer(),
-
         Platform.isAndroid
             ? EmptyContainer()
             : SizedBox(

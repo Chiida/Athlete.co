@@ -16,16 +16,17 @@ void main() async {
   InAppPurchaseConnection.enablePendingPurchases();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final appleSignInAvailable = await AppleSignInAvailable.check();
-  runApp(Provider<AppleSignInAvailable>.value(
-    value: appleSignInAvailable,
-    child: TimerServiceProvider(
-        // provide timer service to all widgets of your app
-        service: timerService,
-        child: Athlete()),
-  ));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(Provider<AppleSignInAvailable>.value(
+      value: appleSignInAvailable,
+      child: TimerServiceProvider(
+          // provide timer service to all widgets of your app
+          service: timerService,
+          child: Athlete()),
+    ));
+  });
 }
 
 class Athlete extends StatelessWidget {

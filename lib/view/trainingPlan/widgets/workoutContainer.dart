@@ -121,8 +121,6 @@ Widget workoutContainer(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin:
-                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 1),
                     child: Icon(
                       Icons.check,
                       size: SizeConfig.blockSizeVertical * 2.5,

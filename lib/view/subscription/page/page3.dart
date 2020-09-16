@@ -4,7 +4,8 @@ import 'package:attt/view/subscription/page/widgets/resultCont.dart';
 import 'package:attt/view/subscription/page/widgets/textReviews.dart';
 import 'package:flutter/material.dart';
 
-Widget pageThree(Card buildProductList, BuildContext context ,Function checkIsIosTablet) {
+Widget pageThree(
+    Card buildProductList, BuildContext context, Function checkIsIosTablet) {
   return Stack(
     children: <Widget>[
       Container(
@@ -14,8 +15,10 @@ Widget pageThree(Card buildProductList, BuildContext context ,Function checkIsIo
       ),
       Container(
         margin: EdgeInsets.only(
-            top: checkIsIosTablet(context) ?  SizeConfig.blockSizeVertical * 7 :  SizeConfig.blockSizeVertical * 11,
-            left: SizeConfig.blockSizeHorizontal * 3,
+          top: checkIsIosTablet(context)
+              ? SizeConfig.blockSizeVertical * 7
+              : SizeConfig.blockSizeVertical * 11,
+          left: SizeConfig.blockSizeHorizontal * 3,
         ),
         width: SizeConfig.blockSizeHorizontal * 100,
         child: RichText(
@@ -31,13 +34,15 @@ Widget pageThree(Card buildProductList, BuildContext context ,Function checkIsIo
                   text: 'ready to compete and win',
                   style: TextStyle(
                       fontSize: SizeConfig.safeBlockHorizontal * 8,
-                      fontWeight: FontWeight.bold, color: Colors.white)),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
             ],
           ),
         ),
       ),
       Container(
-          margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 30,
+          margin: EdgeInsets.only(
+            top: SizeConfig.blockSizeVertical * 30,
             left: SizeConfig.blockSizeHorizontal * 3,
           ),
           child: Column(

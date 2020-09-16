@@ -245,10 +245,6 @@ class _CheckSubscriptionState extends State<CheckSubscription> {
     this._getPurchaseHistory();
   }
 
-  void _requestPurchase(IAPItem item) {
-    FlutterInappPurchase.instance.requestPurchase(item.productId);
-  }
-
   Future _getProduct() async {
     List<IAPItem> items =
         await FlutterInappPurchase.instance.getProducts(_productLists);
@@ -372,11 +368,15 @@ class _CheckSubscriptionState extends State<CheckSubscription> {
     //   print('nije');
   }
 
+  void _requestPurchase(IAPItem item) {
+    FlutterInappPurchase.instance.requestPurchase(item.productId);
+  }
+
   List<Widget> _renderInApps() {
     List<Widget> widgets = this
         ._items
         .map((item) => GestureDetector(
-              onTap: () => this._requestPurchase(item),
+              onTap: () => this._requestPurchase(item), //klik na subskripciju
               child: Stack(children: [
                 Container(
                   decoration: BoxDecoration(

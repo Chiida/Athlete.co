@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:attt/utils/colors.dart';
-import 'package:attt/utils/emptyContainer.dart';
 import 'package:attt/utils/size_config.dart';
 import 'package:attt/view/subscription/page/page1-2.dart';
 import 'package:attt/view/subscription/page/page1.dart';
@@ -10,9 +8,6 @@ import 'package:attt/view/subscription/page/page2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'widgets/resultCont.dart';
-import 'widgets/textReviews.dart';
 
 class SubscriptionClass extends StatefulWidget {
   final Card buildProductList;
@@ -46,7 +41,6 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-
     return WillPopScope(
       onWillPop: () => _onWillPop(),
       child: Scaffold(
@@ -73,7 +67,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                 ),
                 pageOneToTwo(context, widget.pageController, checkIsIosTablet),
                 pageTwo(context, widget.pageController, checkIsIosTablet),
-                pageThree(widget.buildProductList, context ,checkIsIosTablet),
+                pageThree(widget.buildProductList, context, checkIsIosTablet),
               ],
             ),
           ),
