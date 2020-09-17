@@ -301,6 +301,10 @@ PODS:
     - Flutter
   - flutter_inapp_purchase (0.0.1):
     - Flutter
+  - flutter_twitter (0.0.1):
+    - Flutter
+    - TwitterCore
+    - TwitterKit
   - flutter_webview_plugin (0.0.1):
     - Flutter
   - google_sign_in (0.0.1):
@@ -384,6 +388,9 @@ PODS:
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.4.2):
+    - TwitterCore (>= 3.2.0)
   - url_launcher (0.0.1):
     - Flutter
   - video_player (0.0.1):
@@ -400,6 +407,7 @@ DEPENDENCIES:
   - flutter_appavailability (from `.symlinks/plugins/flutter_appavailability/ios`)
   - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - flutter_inapp_purchase (from `.symlinks/plugins/flutter_inapp_purchase/ios`)
+  - flutter_twitter (from `.symlinks/plugins/flutter_twitter/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
@@ -438,6 +446,8 @@ SPEC REPOS:
     - Purchases
     - PurchasesHybridCommon
     - Reachability
+    - TwitterCore
+    - TwitterKit
 
 EXTERNAL SOURCES:
   apple_sign_in:
@@ -460,6 +470,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_facebook_login/ios"
   flutter_inapp_purchase:
     :path: ".symlinks/plugins/flutter_inapp_purchase/ios"
+  flutter_twitter:
+    :path: ".symlinks/plugins/flutter_twitter/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   google_sign_in:
@@ -504,6 +516,7 @@ SPEC CHECKSUMS:
   flutter_appavailability: ebf8f85abea44436d1262fcde8a4e64b2534b01a
   flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
   flutter_inapp_purchase: 5c6a1ac3f11b11d0c8c0321c0c41c1f05805e4c8
+  flutter_twitter: f33a30ee64ecf27e189e2f3cb53ce3318b8bb396
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
@@ -525,9 +538,11 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
 
-PODFILE CHECKSUM: ffd7293eb7d5907b54a367fd400872baeef513a5
+PODFILE CHECKSUM: 30517025a2fecca2d72dac25f08abb5b9a8f1a56
 
 COCOAPODS: 1.10.0.beta.2

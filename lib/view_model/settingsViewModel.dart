@@ -43,11 +43,10 @@ class SettingsViewModel implements SettingsInterface {
       SignInViewModel().signOutFacebook(context);
       SignInViewModel().logout();
       navigateToSignIn(context);
+    } else if (platform == 'Twitter') {
+      SignInViewModel().signOutTwitter(context);
+      SignInViewModel().logout();
+      navigateToSignIn(context);
     }
-    // else if (platform == 'Twitter') {
-    //   SignInViewModel().signOutTwitter(context);
-    //   SignInViewModel().logout();
-    //   navigateToSignIn(context);
-    // }
   }
 }

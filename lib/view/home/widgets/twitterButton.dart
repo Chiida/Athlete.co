@@ -34,56 +34,56 @@ Future<void> getApps() async {
   installedApps = _installedApps;
 }
 
-// Widget twitterButton(BuildContext context) {
-//   SizeConfig().init(context);
-//   return GestureDetector(
-//     onTap: () async {
-//       getApps();
-//       Timer(Duration(seconds: 1), () {
-//         if (isInstalled) {
-//           SignInViewModel().signInWithTwitter(context);
-//         } else
-//           showAlertDialog(context);
-//       });
-//     },
-//     child: Container(
-//         height: 50,
-//         width: SizeConfig.blockSizeHorizontal * 72,
-//         color: MyColors().twitterColor,
-//         child: Row(
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Container(
-//               margin: EdgeInsets.only(
-//                   left: checkIsIosTablet(context)
-//                       ? SizeConfig.blockSizeHorizontal * 1.4
-//                       : SizeConfig.blockSizeHorizontal * 2.5),
-//               child: Icon(
-//                 FontAwesomeIcons.twitter,
-//                 color: Colors.white,
-//                 size: 21,
-//               ),
-//             ),
-//             SizedBox(
-//               width: 7,
-//             ),
-//             Container(
-//               child: Text(
-//                 MyText().tButton,
-//                 style: TextStyle(
-//                   fontSize: 21,
-//                   fontWeight: FontWeight.w500,
-//                   letterSpacing: .3,
-//                   wordSpacing: -.5,
-//                   color: Colors.white,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         )),
-//   );
-// }
+Widget twitterButton(BuildContext context) {
+  SizeConfig().init(context);
+  return GestureDetector(
+    onTap: () async {
+      await getApps();
+
+      (Platform.isAndroid)
+          ? (isInstalled)
+              ? await SignInViewModel().signInWithTwitter(context)
+              : showAlertDialog(context)
+          : await SignInViewModel().signInWithTwitter(context);
+    },
+    child: Container(
+        height: 50,
+        width: SizeConfig.blockSizeHorizontal * 72,
+        color: MyColors().twitterColor,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(
+                  left: checkIsIosTablet(context)
+                      ? SizeConfig.blockSizeHorizontal * 1.4
+                      : SizeConfig.blockSizeHorizontal * 2.5),
+              child: Icon(
+                FontAwesomeIcons.twitter,
+                color: Colors.white,
+                size: 21,
+              ),
+            ),
+            SizedBox(
+              width: 7,
+            ),
+            Container(
+              child: Text(
+                MyText().tButton,
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: .3,
+                  wordSpacing: -.5,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        )),
+  );
+}
 
 bool checkIsIosTablet(BuildContext context) {
   if (MediaQuery.of(context).size.width > 800) {

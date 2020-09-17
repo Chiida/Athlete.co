@@ -15,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_twitter/flutter_twitter.dart';
 // import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -144,130 +145,230 @@ class SignInViewModel implements SignInInterface {
   }
 
   /// twitter sign in classes
-  // TwitterLoginResult _twitterLoginResult;
-  // TwitterLoginStatus _twitterLoginStatus;
-  // TwitterSession _currentUserTwitterSession;
+  TwitterLoginResult _twitterLoginResult;
+  TwitterLoginStatus _twitterLoginStatus;
+  TwitterSession _currentUserTwitterSession;
 
-  // TwitterLogin twitterLogin;
+  TwitterLogin twitterLogin;
+  @override
+  signInWithTwitter(BuildContext context) async {
+    Dialogs.showLoadingDialog(context, _keyLoader);
 
-  /// sign in with twitter
-  ///
-  /// we simply switch over [_twitterLoginStatus] and for every case
-  /// we do something
-  // @override
-  // signInWithTwitter(BuildContext context) async {
-  //   Dialogs.showLoadingDialog(context, _keyLoader);
+    var twitterLogin = new TwitterLogin(
+      consumerKey: 'djP5GyECf8E6ejtiKoRQmXtaz',
+      consumerSecret: 'VpW8ss10r12MlBfB7xr0mVxk8gxOo5tHkNjbM8ACQ4CdF8dakC',
+    );
 
-  //   final TwitterLogin twitterLogin = new TwitterLogin(
-  //     consumerKey: 'Ilrsmygri8GsJmVVwMmqn5cLj',
-  //     consumerSecret: '6Q9w2doSYaw8dygielC2aHfcoLDZIrCuhKRhPkjMCOJXwSUhlV',
-  //   );
+    _twitterLoginResult = await twitterLogin.authorize();
+    _currentUserTwitterSession = _twitterLoginResult.session;
+    _twitterLoginStatus = _twitterLoginResult.status;
 
-  //   _twitterLoginResult = await twitterLogin.authorize();
-  //   _currentUserTwitterSession = _twitterLoginResult.session;
-  //   _twitterLoginStatus = _twitterLoginResult.status;
+    switch (_twitterLoginStatus) {
+      case TwitterLoginStatus.loggedIn:
+        _currentUserTwitterSession = _twitterLoginResult.session;
+        print('Successfully signed in as');
+        break;
 
-  //   switch (_twitterLoginStatus) {
-  //     case TwitterLoginStatus.loggedIn:
-  //       _currentUserTwitterSession = _twitterLoginResult.session;
-  //       print('Successfully signed in as');
-  //       break;
+      case TwitterLoginStatus.cancelledByUser:
+        print('Sign in cancelled by user.');
 
-  //     case TwitterLoginStatus.cancelledByUser:
-  //       print('Sign in cancelled by user.');
+        /// close modal dialog
+        Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+        break;
 
-  //       /// close modal dialog
-  //       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
-  //       break;
+      case TwitterLoginStatus.error:
+        print('An error occurred signing with Twitter.');
 
-  //     case TwitterLoginStatus.error:
-  //       print('An error occurred signing with Twitter.');
+        /// close modal dialog
+        Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+        break;
+    }
 
-  //       /// close modal dialog
-  //       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
-  //       break;
-  //   }
+    AuthCredential _authCredential = TwitterAuthProvider.credential(
+        accessToken: _currentUserTwitterSession?.token ?? '',
+        secret: _currentUserTwitterSession?.secret ?? '');
+    currentUser =
+        (await _firebaseAuth.signInWithCredential(_authCredential)).user;
 
-  //   AuthCredential _authCredential = TwitterAuthProvider.getCredential(
-  //       authToken: _currentUserTwitterSession?.token ?? '',
-  //       authTokenSecret: _currentUserTwitterSession?.secret ?? '');
-  //   currentUser =
-  //       (await _firebaseAuth.signInWithCredential(_authCredential)).user;
+    String userTwitterEmail = currentUser.email;
+    print(userTwitterEmail);
+    String userTwitterUsername = currentUser.displayName;
+    userName = userTwitterUsername;
+    print(userTwitterUsername);
+    String userTwitterPhoto = currentUser.photoURL;
+    userPhoto = userTwitterPhoto;
+    print(userTwitterPhoto);
+    String userUIDTwitter = currentUser.uid;
+    userUIDPref = userUIDTwitter;
+    print(userUIDTwitter);
 
-  //   String userTwitterEmail = currentUser.email;
-  //   print(userTwitterEmail);
-  //   String userTwitterUsername = currentUser.displayName;
-  //   userName = userTwitterUsername;
-  //   print(userTwitterUsername);
-  //   String userTwitterPhoto = currentUser.photoUrl;
-  //   userPhoto = userTwitterPhoto;
-  //   print(userTwitterPhoto);
-  //   String userUIDTwitter = currentUser.uid;
-  //   userUIDPref = userUIDTwitter;
-  //   print(userUIDTwitter);
+    loginUser();
 
-  //   loginUser();
+    ///Checking if user already exists in database
+    ///
+    ///If user exists, users info is collected
+    ///If user does not exist, user is created
+    bool userExist = await doesUserAlreadyExist(userUIDTwitter);
+    if (!userExist) {
+      createUser(userTwitterUsername, userTwitterEmail, userTwitterPhoto,
+          userUIDTwitter, 'Twitter');
+      currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
+      currentUserDocument = currentUserDocuments[0];
+    } else {
+      currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
+      currentUserDocument = currentUserDocuments[0];
+      if (currentUserDocument.data()['trainer'] != null &&
+          currentUserDocument.data()['trainer'] != '') {
+        currentUserTrainerDocuments =
+            await getCurrentUserTrainer(currentUserDocument.data()['trainer']);
+        currentUserTrainerDocument = currentUserTrainerDocuments[0];
+        totalWeeks = await getCurrentUserTrainerWeeks(
+            currentUserTrainerDocument.data()['trainerID']);
+        currentUserTrainerName =
+            currentUserTrainerDocument.data()['trainer_name'];
+        currentUserTrainingPlanDuration =
+            currentUserTrainerDocument.data()['training_plan_duration'];
+        currentUserTrainingPlan =
+            currentUserTrainerDocument.data()['training_plan_name'];
+      }
+    }
 
-  //   ///Checking if user already exists in database
-  //   ///
-  //   ///If user exists, users info is collected
-  //   ///If user does not exist, user is created
-  //   bool userExist = await doesUserAlreadyExist(userUIDTwitter);
-  //   if (!userExist) {
-  //     createUser(userTwitterUsername, userTwitterEmail, userTwitterPhoto,
-  //         userUIDTwitter, 'Twitter');
-  //     currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
-  //     currentUserDocument = currentUserDocuments[0];
-  //   } else {
-  //     currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
-  //     currentUserDocument = currentUserDocuments[0];
-  //     if (currentUserDocument.data()['trainer'] != null &&
-  //         currentUserDocument.data()['trainer'] != '') {
-  //       currentUserTrainerDocuments =
-  //           await getCurrentUserTrainer(currentUserDocument.data()['trainer']);
-  //       currentUserTrainerDocument = currentUserTrainerDocuments[0];
-  //       totalWeeks = await getCurrentUserTrainerWeeks(
-  //           currentUserTrainerDocument.data()['trainerID']);
-  //       currentUserTrainerName =
-  //           currentUserTrainerDocument.data()['trainer_name'];
-  //       currentUserTrainingPlanDuration =
-  //           currentUserTrainerDocument.data()['training_plan_duration'];
-  //       currentUserTrainingPlan =
-  //           currentUserTrainerDocument.data()['training_plan_name'];
-  //     }
-  //   }
+    /// close modal dialog
+    Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
 
-  //   /// close modal dialog
-  //   Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+    Navigator.of(context).pushAndRemoveUntil(
+        CardAnimationTween(
+          widget: Platform.isIOS
+              ? CheckSubscription(
+                  currentUserDocument: currentUserDocument,
+                  currentUserTrainerDocument: currentUserTrainerDocument,
+                  userName: userName,
+                  userEmail: userEmail,
+                  userExist: userExist,
+                  userPhoto: userPhoto,
+                  userUID: userUIDTwitter,
+                )
+              : CheckSubscriptionAndroid(
+                  currentUserDocument: currentUserDocument,
+                  currentUserTrainerDocument: currentUserTrainerDocument,
+                  userName: userName,
+                  userEmail: userEmail,
+                  userExist: userExist,
+                  userPhoto: userPhoto,
+                  userUID: userUIDTwitter,
+                ),
+        ),
+        (Route<dynamic> route) => false);
 
-  //   Navigator.of(context).pushAndRemoveUntil(
-  //       CardAnimationTween(
-  //         widget: Platform.isIOS
-  //             ? CheckSubscription(
-  //                 currentUserDocument: currentUserDocument,
-  //                 currentUserTrainerDocument: currentUserTrainerDocument,
-  //                 userName: userName,
-  //                 userEmail: userEmail,
-  //                 userExist: userExist,
-  //                 userPhoto: userPhoto,
-  //                 userUID: userUIDTwitter,
-  //               )
-  //             : CheckSubscriptionAndroid(
-  //                 currentUserDocument: currentUserDocument,
-  //                 currentUserTrainerDocument: currentUserTrainerDocument,
-  //                 userName: userName,
-  //                 userEmail: userEmail,
-  //                 userExist: userExist,
-  //                 userPhoto: userPhoto,
-  //                 userUID: userUIDTwitter,
-  //               ),
-  //       ),
-  //       (Route<dynamic> route) => false);
-  // }
+    // Dialogs.showLoadingDialog(context, _keyLoader);
 
-  /// sign in with google
-  ///
-  /// instance [googleSignIn]
+    // final TwitterLogin twitterLogin = new TwitterLogin(
+    //   consumerKey: 'Ilrsmygri8GsJmVVwMmqn5cLj',
+    //   consumerSecret: '6Q9w2doSYaw8dygielC2aHfcoLDZIrCuhKRhPkjMCOJXwSUhlV',
+    // );
+
+    // _twitterLoginResult = await twitterLogin.authorize();
+    // _currentUserTwitterSession = _twitterLoginResult.session;
+    // _twitterLoginStatus = _twitterLoginResult.status;
+
+    // switch (_twitterLoginStatus) {
+    //   case TwitterLoginStatus.loggedIn:
+    //     _currentUserTwitterSession = _twitterLoginResult.session;
+    //     print('Successfully signed in as');
+    //     break;
+
+    //   case TwitterLoginStatus.cancelledByUser:
+    //     print('Sign in cancelled by user.');
+
+    //     /// close modal dialog
+    //     Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+    //     break;
+
+    //   case TwitterLoginStatus.error:
+    //     print('An error occurred signing with Twitter.');
+
+    //     /// close modal dialog
+    //     Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+    //     break;
+    // }
+
+    // AuthCredential _authCredential = TwitterAuthProvider.getCredential(
+    //     authToken: _currentUserTwitterSession?.token ?? '',
+    //     authTokenSecret: _currentUserTwitterSession?.secret ?? '');
+    // currentUser =
+    //     (await _firebaseAuth.signInWithCredential(_authCredential)).user;
+
+    // String userTwitterEmail = currentUser.email;
+    // print(userTwitterEmail);
+    // String userTwitterUsername = currentUser.displayName;
+    // userName = userTwitterUsername;
+    // print(userTwitterUsername);
+    // String userTwitterPhoto = currentUser.photoUrl;
+    // userPhoto = userTwitterPhoto;
+    // print(userTwitterPhoto);
+    // String userUIDTwitter = currentUser.uid;
+    // userUIDPref = userUIDTwitter;
+    // print(userUIDTwitter);
+
+    // loginUser();
+
+    // ///Checking if user already exists in database
+    // ///
+    // ///If user exists, users info is collected
+    // ///If user does not exist, user is created
+    // bool userExist = await doesUserAlreadyExist(userUIDTwitter);
+    // if (!userExist) {
+    //   createUser(userTwitterUsername, userTwitterEmail, userTwitterPhoto,
+    //       userUIDTwitter, 'Twitter');
+    //   currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
+    //   currentUserDocument = currentUserDocuments[0];
+    // } else {
+    //   currentUserDocuments = await getCurrentUserDocument(userUIDTwitter);
+    //   currentUserDocument = currentUserDocuments[0];
+    //   if (currentUserDocument.data()['trainer'] != null &&
+    //       currentUserDocument.data()['trainer'] != '') {
+    //     currentUserTrainerDocuments =
+    //         await getCurrentUserTrainer(currentUserDocument.data()['trainer']);
+    //     currentUserTrainerDocument = currentUserTrainerDocuments[0];
+    //     totalWeeks = await getCurrentUserTrainerWeeks(
+    //         currentUserTrainerDocument.data()['trainerID']);
+    //     currentUserTrainerName =
+    //         currentUserTrainerDocument.data()['trainer_name'];
+    //     currentUserTrainingPlanDuration =
+    //         currentUserTrainerDocument.data()['training_plan_duration'];
+    //     currentUserTrainingPlan =
+    //         currentUserTrainerDocument.data()['training_plan_name'];
+    //   }
+    // }
+
+    // /// close modal dialog
+    // Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     CardAnimationTween(
+    //       widget: Platform.isIOS
+    //           ? CheckSubscription(
+    //               currentUserDocument: currentUserDocument,
+    //               currentUserTrainerDocument: currentUserTrainerDocument,
+    //               userName: userName,
+    //               userEmail: userEmail,
+    //               userExist: userExist,
+    //               userPhoto: userPhoto,
+    //               userUID: userUIDTwitter,
+    //             )
+    //           : CheckSubscriptionAndroid(
+    //               currentUserDocument: currentUserDocument,
+    //               currentUserTrainerDocument: currentUserTrainerDocument,
+    //               userName: userName,
+    //               userEmail: userEmail,
+    //               userExist: userExist,
+    //               userPhoto: userPhoto,
+    //               userUID: userUIDTwitter,
+    //             ),
+    //     ),
+    //     (Route<dynamic> route) => false);
+  }
+
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   @override
@@ -557,12 +658,12 @@ class SignInViewModel implements SignInInterface {
     isLoggedIn = true;
   }
 
-  // @override
-  // signOutTwitter(BuildContext context) async {
-  //   await twitterLogin.logOut();
-  //   currentUser = null;
-  //   logout();
-  // }
+  @override
+  signOutTwitter(BuildContext context) async {
+    await twitterLogin.logOut();
+    currentUser = null;
+    logout();
+  }
 
   ///Method which redirects user to Privacy Policy and Terms of Services
   @override

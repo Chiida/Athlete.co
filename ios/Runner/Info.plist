@@ -25,6 +25,7 @@
 			<array>
 				<string>com.googleusercontent.apps.83943705826-h64g9grqq9bm5jieeohv7u7bev4tvi9o</string>
 				<string>fb822212645190340</string>
+                <string>twitterkit-djP5GyECf8E6ejtiKoRQmXtaz</string>
 			</array>
 		</dict>
 	</array>
@@ -62,6 +63,9 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

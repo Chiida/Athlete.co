@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class SignInInterface {
-  // signInWithTwitter(
-  //   BuildContext context,
-  // );
+  signInWithTwitter(
+    BuildContext context,
+  );
   signInWithGoogle(BuildContext context);
   signOutGoogle(BuildContext context);
   signInWithFacebook(BuildContext context);
@@ -14,7 +14,7 @@ abstract class SignInInterface {
   autoLogIn(BuildContext context);
   logout();
   loginUser();
-  // signOutTwitter(BuildContext context);
+  signOutTwitter(BuildContext context);
   redirectToPrivacyAndTerms();
   createUser(
       String name, String email, String image, String userUID, String platform);
