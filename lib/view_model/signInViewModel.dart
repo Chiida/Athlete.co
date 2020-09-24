@@ -771,6 +771,7 @@ class SignInViewModel implements SignInInterface {
   @override
   signInWithFacebook(BuildContext context) async {
     final facebookLogin = FacebookLogin();
+    facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
     final result = await facebookLogin.logIn(['email']);
     final token = result.accessToken.token;
     final graphResponse = await http.get(
