@@ -236,30 +236,67 @@ class SignInViewModel implements SignInInterface {
     /// close modal dialog
     Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
 
-    Navigator.of(context).pushAndRemoveUntil(
-        CardAnimationTween(
-          widget: Platform.isIOS
-              ? CheckSubscription(
-                  currentUserDocument: currentUserDocument,
-                  currentUserTrainerDocument: currentUserTrainerDocument,
-                  userName: userName,
-                  userEmail: userEmail,
-                  userExist: userExist,
-                  userPhoto: userPhoto,
-                  userUID: userUIDTwitter,
-                )
-              : CheckSubscriptionAndroid(
-                  currentUserDocument: currentUserDocument,
-                  currentUserTrainerDocument: currentUserTrainerDocument,
-                  userName: userName,
-                  userEmail: userEmail,
-                  userExist: userExist,
-                  userPhoto: userPhoto,
-                  userUID: userUIDTwitter,
-                ),
-        ),
-        (Route<dynamic> route) => false);
+    /// checking subscription status
+    var expirationDateFromShared;
+    final prefs = await SharedPreferences.getInstance();
+    expirationDateFromShared = prefs.getString('expirationDate') ?? '0';
+    print(expirationDateFromShared.toString() + ' Expiration Date From Shared');
 
+    var thisMoment = DateTime.now().toUtc().millisecondsSinceEpoch;
+
+    int equalityResult =
+        expirationDateFromShared.compareTo(thisMoment.toString());
+    print(equalityResult);
+
+    if (equalityResult == 1) {
+      /// go in app
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => userExist
+              ? currentUserDocument.data()['trainer'] != null &&
+                      currentUserDocument.data()['trainer'] != ''
+                  ? TrainingPlan(
+                      userTrainerDocument: currentUserTrainerDocument,
+                      userDocument: currentUserDocument,
+                    )
+                  : ChooseAthlete(
+                      userDocument: currentUserDocument,
+                      name: userName,
+                      email: userEmail,
+                      photo: userPhoto,
+                      userUID: userUIDTwitter,
+                    )
+              : ChooseAthlete(
+                  userDocument: currentUserDocument,
+                  name: userName,
+                  email: userEmail,
+                  photo: userPhoto,
+                  userUID: userUIDTwitter,
+                )));
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
+          CardAnimationTween(
+            widget: Platform.isIOS
+                ? CheckSubscription(
+                    currentUserDocument: currentUserDocument,
+                    currentUserTrainerDocument: currentUserTrainerDocument,
+                    userName: userName,
+                    userEmail: userEmail,
+                    userExist: userExist,
+                    userPhoto: userPhoto,
+                    userUID: userUIDTwitter,
+                  )
+                : CheckSubscriptionAndroid(
+                    currentUserDocument: currentUserDocument,
+                    currentUserTrainerDocument: currentUserTrainerDocument,
+                    userName: userName,
+                    userEmail: userEmail,
+                    userExist: userExist,
+                    userPhoto: userPhoto,
+                    userUID: userUIDTwitter,
+                  ),
+          ),
+          (Route<dynamic> route) => false);
+    }
     // Dialogs.showLoadingDialog(context, _keyLoader);
 
     // final TwitterLogin twitterLogin = new TwitterLogin(
@@ -832,30 +869,69 @@ class SignInViewModel implements SignInInterface {
           }
         }
 
-        ///Navigating logged user into application
-        Navigator.of(context).pushAndRemoveUntil(
-            CardAnimationTween(
-              widget: Platform.isIOS
-                  ? CheckSubscription(
-                      currentUserDocument: currentUserDocument,
-                      currentUserTrainerDocument: currentUserTrainerDocument,
-                      userName: userName,
-                      userEmail: userEmail,
-                      userExist: userExist,
-                      userPhoto: userPhoto,
+        /// checking subscription status
+        var expirationDateFromShared;
+        final prefs = await SharedPreferences.getInstance();
+        expirationDateFromShared = prefs.getString('expirationDate') ?? '0';
+        print(expirationDateFromShared.toString() +
+            ' Expiration Date From Shared');
+
+        var thisMoment = DateTime.now().toUtc().millisecondsSinceEpoch;
+
+        int equalityResult =
+            expirationDateFromShared.compareTo(thisMoment.toString());
+        print(equalityResult);
+
+        if (equalityResult == 1) {
+          /// go in app
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (_) => userExist
+                  ? currentUserDocument.data()['trainer'] != null &&
+                          currentUserDocument.data()['trainer'] != ''
+                      ? TrainingPlan(
+                          userTrainerDocument: currentUserTrainerDocument,
+                          userDocument: currentUserDocument,
+                        )
+                      : ChooseAthlete(
+                          userDocument: currentUserDocument,
+                          name: userName,
+                          email: userEmail,
+                          photo: userPhoto,
+                          userUID: userUIDFacebook,
+                        )
+                  : ChooseAthlete(
+                      userDocument: currentUserDocument,
+                      name: userName,
+                      email: userEmail,
+                      photo: userPhoto,
                       userUID: userUIDFacebook,
-                    )
-                  : CheckSubscriptionAndroid(
-                      currentUserDocument: currentUserDocument,
-                      currentUserTrainerDocument: currentUserTrainerDocument,
-                      userName: userName,
-                      userEmail: userEmail,
-                      userExist: userExist,
-                      userPhoto: userPhoto,
-                      userUID: userUIDFacebook,
-                    ),
-            ),
-            (Route<dynamic> route) => false);
+                    )));
+        } else {
+          ///Navigating logged user into application
+          Navigator.of(context).pushAndRemoveUntil(
+              CardAnimationTween(
+                widget: Platform.isIOS
+                    ? CheckSubscription(
+                        currentUserDocument: currentUserDocument,
+                        currentUserTrainerDocument: currentUserTrainerDocument,
+                        userName: userName,
+                        userEmail: userEmail,
+                        userExist: userExist,
+                        userPhoto: userPhoto,
+                        userUID: userUIDFacebook,
+                      )
+                    : CheckSubscriptionAndroid(
+                        currentUserDocument: currentUserDocument,
+                        currentUserTrainerDocument: currentUserTrainerDocument,
+                        userName: userName,
+                        userEmail: userEmail,
+                        userExist: userExist,
+                        userPhoto: userPhoto,
+                        userUID: userUIDFacebook,
+                      ),
+              ),
+              (Route<dynamic> route) => false);
+        }
 
         ///Logging user to shared preference with aim to
         ///
